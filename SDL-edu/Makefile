@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = 04_SDL.c
+OBJS = 05_SDL.c
 
 #CC specifies which compiler we're using
 CC = gcc
