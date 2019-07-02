@@ -33,7 +33,7 @@ bool init() {
         success = false;
 
     } else {    
-        gWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_HEIGHT, SCREEN_WIDTH, SDL_WINDOW_SHOWN);
+        gWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
         if(gWindow == NULL) { //Create window
             printf("Window could not initialize! SDL Error: %s\n", SDL_GetError());
             success = false;
@@ -123,7 +123,7 @@ int main(int argc, char *args[]) {
 
             while(!quit) { //Game loop
                 while(SDL_PollEvent(&e) != 0) { //Event queue loop
-                    if(e.type == SDL_Quit) {
+                    if(e.type == SDL_QUIT) {
                         quit = true;
 
                     }
@@ -135,7 +135,7 @@ int main(int argc, char *args[]) {
                 SDL_UpdateWindowSurface(gWindow);
 
             }
-            
+
         }
 
     }
