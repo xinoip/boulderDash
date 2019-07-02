@@ -111,25 +111,31 @@ SDL_Surface * loadSurface(char *path) {
 
 int main(int argc, char *args[]) {
     if(!init()) { //Init phase
-        printf("Failed to initialize!");
+        printf("Failed to initialize!\n");
 
     } else {
-        bool quit = false;
-        SDL_Event e;
+        if(!loadMedia()) {
+            printf("Failed to load media!\n");
 
-        while(!quit) { //Game loop
-            while(SDL_PollEvent(&e) != 0) { //Event queue loop
-                if(e.type == SDL_Quit) {
-                    quit = true;
+        } else {
+            bool quit = false;
+            SDL_Event e;
+
+            while(!quit) { //Game loop
+                while(SDL_PollEvent(&e) != 0) { //Event queue loop
+                    if(e.type == SDL_Quit) {
+                        quit = true;
+
+                    }
 
                 }
 
+                SDL_BlitSurface(gPNGSurface, NULL, gScreenSurface, NULL);
+
+                SDL_UpdateWindowSurface(gWindow);
+
             }
-
-            SDL_BlitSurface(gPNGSurface, NULL, gScreenSurface, NULL);
-
-            SDL_UpdateWindowSurface(gWindow);
-
+            
         }
 
     }
