@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = 06_SDL.c
+OBJS = fool_1.c
 
 #CC specifies which compiler we're using
 CC = gcc
@@ -9,7 +9,7 @@ CC = gcc
 COMPILER_FLAGS = -w
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+LINKER_FLAGS = -lSDL2 -lSDL2_image
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = app
