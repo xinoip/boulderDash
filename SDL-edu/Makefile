@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = fool_2.c
+OBJS = 26_SDL.c
 
 #CC specifies which compiler we're using
 CC = gcc
