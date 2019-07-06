@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = boilerP_2.c
+OBJS = pio-texture.c pio-text-font.c main.c
 
 #CC specifies which compiler we're using
 CC = gcc
