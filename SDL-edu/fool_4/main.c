@@ -149,7 +149,7 @@ int main(int argc, char *args[]) {
 
                 SDL_RenderClear(gRenderer);
                 
-                if(SDL_GetTicks() % 10 == 0) {
+                if(SDL_GetTicks() % 1000 == 0) {
                     char tmp[1000];
                     sprintf(tmp, "%d", counterMe++);
                     updatePioTextFont(&mainText, tmp, gRenderer);
