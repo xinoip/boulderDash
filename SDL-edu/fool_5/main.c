@@ -360,7 +360,7 @@ int main(int argc, char *args[]) {
 
                 }
 
-                if(SDL_GetTicks() % 200 == 0) {
+                if(SDL_GetTicks() % 100 == 0) {
                     updateMap();    
                 }
 
