@@ -257,6 +257,7 @@ int main(int argc, char *args[]) {
     fillLevel(&currLevel, "./assets/maps/map2.txt");
     printLevel(currLevel);
 
+    Uint32 lastTime = 0, currentTime;
     if(!init()) {
         printf("Failed to initialize!\n");
 
@@ -325,6 +326,9 @@ int main(int argc, char *args[]) {
                             miner.row = 1;
                             miner.col = 1;
                             break;
+                        case SDLK_f:
+                            updateMap();
+                            break;
                         default:
                             break;
                         }
@@ -342,10 +346,15 @@ int main(int argc, char *args[]) {
                     }
 
                 }
+                
+                currentTime = SDL_GetTicks();
+                if(currentTime > lastTime + 200) {
+                    updateMap();
+                    lastTime = currentTime;    
 
-                if(SDL_GetTicks() % 100 == 0) {
-                    updateMap();    
                 }
+
+                //printf("%d\n", SDL_GetTicks());
 
                 camera.col = miner.col;
                 camera.row = miner.row;
