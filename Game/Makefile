@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = ./*/pio-texture.c ./*/pio-text-font.c ./*/pio-window.c ./*/miner.c ./*/camera.c ./*/tile.c ./*/level.c main.c
+OBJS = ./*/pio-texture.c ./*/pio-text-font.c ./*/pio-window.c ./*/miner.c ./*/camera.c ./*/tile.c ./*/level.c render.c main.c
 
 #CC specifies which compiler we're using
 CC = gcc

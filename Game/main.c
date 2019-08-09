@@ -10,6 +10,7 @@
 #include "./objects/miner.h"
 #include "./objects/camera.h"
 #include "./objects/level.h"
+#include "./render.h"
 
 #define INIT_WIDTH 640
 #define INIT_HEIGHT 480
@@ -23,12 +24,6 @@ pioWindow_t gameWindow;
 level_t currLevel;
 
 const char *TITLE = "pioGame";
-
-pioTexture_t playerTexture;
-pioTexture_t emptyTexture;
-pioTexture_t dirtTexture;
-pioTexture_t borderTexture;
-pioTexture_t rockTexture;
 
 SDL_Renderer *gRenderer = NULL;
 TTF_Font *gFont = NULL;
@@ -76,51 +71,6 @@ void updateMap() {
 
 }
 
-void renderMap() {
-    SDL_RenderClear(gRenderer);
-    
-    //i specifies the Y coordinate of render pixel
-    for(int i = 0; i < currLevel.row; i++) {
-        //j specifies the X coordinate of render pixel
-        for(int j = 0; j < currLevel.col; j++) {
-            tile_t currentTile = createTile(i, j);
-            tile_t cam = createTile(camera.row, camera.col);
-            //int topBarMenu = 30;
-            int diffX = (gameWindow.width / 2) - cam.center_x; 
-            int diffY = (gameWindow.height / 2) - cam.center_y ;//+ topBarMenu;
-            
-            if(isInsideCamera(gameWindow, camera, i, j)) {
-                switch (currLevel.map[i][j]) {
-                case 'W':
-                    renderPioTexture(borderTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, gRenderer);
-                    break;
-                case 'P':
-                    renderPioTexture(playerTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, gRenderer);
-                    break;
-                case 'D':
-                    renderPioTexture(dirtTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, gRenderer);
-                    break;
-                case 'E':
-                    renderPioTexture(emptyTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, gRenderer);
-                    break;
-                case 'R':
-                    renderPioTexture(rockTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, gRenderer);
-                    break;
-                case 'B':
-                    renderPioTexture(rockTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, gRenderer);
-                    break;
-                default:
-                    break;
-                }
-            }
-
-        }
-    }
-
-    //drawGameBar(gRenderer);
-
-}
-/* MUST REFACTOR THESE */
 
 bool isValidCellToMove(const int x, const int y) {
 
@@ -130,7 +80,6 @@ bool isValidCellToMove(const int x, const int y) {
 }
 
 bool init();
-bool loadMedia();
 void closeAll();
 
 bool init() {
@@ -189,61 +138,9 @@ bool init() {
 
 }
 
-bool loadMedia() {
-
-    bool success = true;
-
-    playerTexture = loadPioTexture("./assets/image/playerTexture.png", gRenderer);
-    resizePioTexture(&playerTexture, TILE_WIDTH, TILE_HEIGHT);
-    if(playerTexture.texture == NULL) {
-        printf("Failed to load playerTexture image!\n");
-        success = false;
-
-    }
-
-    emptyTexture = loadPioTexture("./assets/image/emptyTexture.png", gRenderer);
-    resizePioTexture(&emptyTexture, TILE_WIDTH, TILE_HEIGHT);
-    if(emptyTexture.texture == NULL) {
-        printf("Failed to load emptyTexture image!\n");
-        success = false;
-
-    }
-
-    dirtTexture = loadPioTexture("./assets/image/dirtTexture.png", gRenderer);
-    resizePioTexture(&dirtTexture, TILE_WIDTH, TILE_HEIGHT);
-    if(dirtTexture.texture == NULL) {
-        printf("Failed to load dirtTexture image!\n");
-        success = false;
-
-    }
-
-    borderTexture = loadPioTexture("./assets/image/borderTexture.png", gRenderer);
-    resizePioTexture(&borderTexture, TILE_WIDTH, TILE_HEIGHT);
-    if(borderTexture.texture == NULL) {
-        printf("Failed to load borderTexture image!\n");
-        success = false;
-
-    }
-
-    rockTexture = loadPioTexture("./assets/image/rockTexture.png", gRenderer);
-    resizePioTexture(&rockTexture, TILE_WIDTH, TILE_HEIGHT);
-    if(rockTexture.texture == NULL) {
-        printf("Failed to load rockTexture image!\n");
-        success = false;
-
-    }
-
-    return success;
-
-}
-
 void closeAll() {
 
-    destroyPioTexture(&dirtTexture);
-    destroyPioTexture(&borderTexture);
-    destroyPioTexture(&playerTexture);
-    destroyPioTexture(&emptyTexture);
-    destroyPioTexture(&rockTexture);
+    closeMedia();
 
     SDL_DestroyRenderer(gRenderer);
     gRenderer = NULL;
@@ -263,7 +160,7 @@ int main(int argc, char *args[]) {
         printf("Failed to initialize!\n");
 
     } else {
-        if(!loadMedia()) {
+        if(!loadMedia(gRenderer)) {
             printf("Failed to load media!\n");
 
         } else {
@@ -271,12 +168,9 @@ int main(int argc, char *args[]) {
 
             SDL_Event e;
 
-            int counterMe = 1;
-
             fillLevel(&currLevel, "./assets/maps/mapB.txt");
-            //printLevel(currLevel);
             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
-            //printf("miner: (%d, %d)\n", miner.row, miner.col);
+            
 
             while(!quit) {
                 while(SDL_PollEvent(&e) != 0) {
@@ -323,7 +217,6 @@ int main(int argc, char *args[]) {
                             break;
                         case SDLK_b:
                             fillLevel(&currLevel, "./assets/maps/mapB.txt");
-                            printLevel(currLevel);
                             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
                             break;
                         case SDLK_c:
@@ -355,11 +248,9 @@ int main(int argc, char *args[]) {
 
                 }
 
-                //printf("%d\n", SDL_GetTicks());
-
                 updateCameraPosition(&camera, miner.row, miner.col);
 
-                renderMap();
+                renderMap(currLevel, camera, gameWindow, gRenderer);
 
                 SDL_RenderPresent(gRenderer);
 
