@@ -57,3 +57,20 @@ void resizePioTexture(pioTexture_t *p, int newWidth, int newHeight) {
 
 }
 
+void drawGameBar(SDL_Renderer *renderer) {
+
+    SDL_Rect bar;
+    bar.w = 640;
+    bar.h = 30;
+    bar.x = 0;
+    bar.y = 0;
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+
+    SDL_RenderFillRect(renderer, &bar);
+    //SDL_RenderPresent(renderer);
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
+
+}
+

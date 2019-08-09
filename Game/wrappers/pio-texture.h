@@ -23,4 +23,6 @@ void destroyPioTexture(pioTexture_t *p);
 //Streches or minimizes the texture
 void resizePioTexture(pioTexture_t *p, int newWidth, int newHeight); 
 
+void drawGameBar(SDL_Renderer *renderer);
+
 #endif

@@ -78,14 +78,16 @@ void updateMap() {
 
 void renderMap() {
     SDL_RenderClear(gRenderer);
+    
     //i specifies the Y coordinate of render pixel
     for(int i = 0; i < currLevel.row; i++) {
         //j specifies the X coordinate of render pixel
         for(int j = 0; j < currLevel.col; j++) {
             tile_t currentTile = createTile(i, j);
             tile_t cam = createTile(camera.row, camera.col);
+            //int topBarMenu = 30;
             int diffX = (gameWindow.width / 2) - cam.center_x; 
-            int diffY = (gameWindow.height / 2) - cam.center_y;
+            int diffY = (gameWindow.height / 2) - cam.center_y ;//+ topBarMenu;
             
             if(isInsideCamera(gameWindow, camera, i, j)) {
                 switch (currLevel.map[i][j]) {
@@ -114,6 +116,8 @@ void renderMap() {
 
         }
     }
+
+    //drawGameBar(gRenderer);
 
 }
 /* MUST REFACTOR THESE */
@@ -254,9 +258,6 @@ void closeAll() {
 
 int main(int argc, char *args[]) {
 
-    fillLevel(&currLevel, "./assets/maps/map2.txt");
-    printLevel(currLevel);
-
     Uint32 lastTime = 0, currentTime;
     if(!init()) {
         printf("Failed to initialize!\n");
@@ -271,6 +272,11 @@ int main(int argc, char *args[]) {
             SDL_Event e;
 
             int counterMe = 1;
+
+            fillLevel(&currLevel, "./assets/maps/mapB.txt");
+            //printLevel(currLevel);
+            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+            //printf("miner: (%d, %d)\n", miner.row, miner.col);
 
             while(!quit) {
                 while(SDL_PollEvent(&e) != 0) {
@@ -312,22 +318,17 @@ int main(int argc, char *args[]) {
                             
                             break;
                         case SDLK_a:
-                            fillLevel(&currLevel, "./assets/maps/fooMap.txt");
-                            miner.row = 1;
-                            miner.col = 1;
+                            fillLevel(&currLevel, "./assets/maps/mapA.txt");
+                            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
                             break;
                         case SDLK_b:
-                            fillLevel(&currLevel, "./assets/maps/map2.txt");
-                            miner.row = 2;
-                            miner.col = 3;
+                            fillLevel(&currLevel, "./assets/maps/mapB.txt");
+                            printLevel(currLevel);
+                            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
                             break;
                         case SDLK_c:
-                            fillLevel(&currLevel, "./assets/maps/map3.txt");
-                            miner.row = 1;
-                            miner.col = 1;
-                            break;
-                        case SDLK_f:
-                            updateMap();
+                            fillLevel(&currLevel, "./assets/maps/mapX.txt");
+                            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
                             break;
                         default:
                             break;
@@ -356,8 +357,7 @@ int main(int argc, char *args[]) {
 
                 //printf("%d\n", SDL_GetTicks());
 
-                camera.col = miner.col;
-                camera.row = miner.row;
+                updateCameraPosition(&camera, miner.row, miner.col);
 
                 renderMap();
 

@@ -15,4 +15,6 @@ void updateCamera(camera_t *camera, pioWindow_t window);
 
 bool isInsideCamera(pioWindow_t window, camera_t camera,int row, int col);
 
+void updateCameraPosition(camera_t *camera, int newRow, int newCol);
+
 #endif

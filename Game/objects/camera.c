@@ -21,3 +21,8 @@ bool isInsideCamera(pioWindow_t window, camera_t camera,int row, int col) {
 
     return (row >= upRow && row <= downRow && col >= leftCol && col <= rightCol);  
 }
+
+void updateCameraPosition(camera_t *camera, int newRow, int newCol) {
+    camera->row = newRow;
+    camera->col = newCol;
+}

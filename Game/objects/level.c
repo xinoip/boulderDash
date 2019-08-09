@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include "./level.h"
 
-level_t createLevel(int row, int col) {
+//create level_t and allocate space for level array
+level_t createLevel(int row, int col, int minerRow, int minerCol) {
     level_t rtr;
     rtr.row = row;
     rtr.col = col;
+    rtr.startMinerRow = minerRow;
+    rtr.startMinerCol = minerCol;
 
     rtr.map = (char **) malloc(row * sizeof(char *));
 
@@ -15,11 +18,13 @@ level_t createLevel(int row, int col) {
     return rtr;
 }
 
+//create level_t from level using createLevel function, and fill it with data from filename
+//probably a memory leak here, before filling destroy old map pls
 void fillLevel(level_t *level, char *filename) {
 
     int LINE_LENGTH = 255;
     char buffer[LINE_LENGTH];
-    int row, col;
+    int row, col, minerRow, minerCol;
 
     char currChar;
 
@@ -32,12 +37,19 @@ void fillLevel(level_t *level, char *filename) {
 
     fscanf(fp, "%d", &row);
     fscanf(fp, "%d", &col);
-    *level = createLevel(row, col);
+
+    //fscanf(fp, "%c", &currChar); //read carriage return only for windows files
+    fscanf(fp, "%c", &currChar); //read new line
+
+    fscanf(fp, "%d", &minerRow);
+    fscanf(fp, "%d", &minerCol);
+
+    *level = createLevel(row, col, minerRow, minerCol);
 
     while(currChar != '-') {
         fscanf(fp, "%c", &currChar);
     }
-    fscanf(fp, "%c", &currChar); //read carriage return only for windows files
+    //fscanf(fp, "%c", &currChar); //read carriage return only for windows files
     fscanf(fp, "%c", &currChar); //read new line
     
     for(int i = 0; i < row; i++) {
@@ -45,7 +57,7 @@ void fillLevel(level_t *level, char *filename) {
             fscanf(fp, "%c", &currChar);
             level->map[i][j] = currChar;
         }
-        fscanf(fp, "%c", &currChar); //read carriage return only for windows files
+        //fscanf(fp, "%c", &currChar); //read carriage return only for windows files
         fscanf(fp, "%c", &currChar); //read new line
     }
 
