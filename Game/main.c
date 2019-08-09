@@ -11,6 +11,7 @@
 #include "./objects/camera.h"
 #include "./objects/level.h"
 #include "./render.h"
+#include "./objects/controls.h"
 
 #define INIT_WIDTH 640
 #define INIT_HEIGHT 480
@@ -27,57 +28,6 @@ const char *TITLE = "pioGame";
 
 SDL_Renderer *gRenderer = NULL;
 TTF_Font *gFont = NULL;
-
-void updateMap() {
-
-    for(int row = 0; row < currLevel.row; row++) {
-        for(int col = 0; col < currLevel.col; col++) {
-            if(currLevel.map[row][col] == 'R') {
-                if(currLevel.map[row+1][col] == 'E') {
-                    currLevel.map[row][col] = 'E';
-                    currLevel.map[row+1][col] = 'B';
-                    
-
-                } else if(currLevel.map[row+1][col] == 'R') {
-                    if(currLevel.map[row+1][col+1] == 'E') {
-                        currLevel.map[row][col] = 'E';
-                        currLevel.map[row+1][col+1] = 'B';
-
-                    } else if(currLevel.map[row+1][col-1] == 'E') {
-                        currLevel.map[row][col] = 'E';
-                        currLevel.map[row+1][col-1] = 'B';
-
-                    }
-
-                }
-
-
-            }
-
-        }
-
-    }
-
-    for(int row = 0; row < currLevel.row; row++) {
-        for(int col = 0; col < currLevel.col; col++) {
-            if(currLevel.map[row][col] == 'B') {
-                currLevel.map[row][col] = 'R';
-
-            }
-
-        }
-
-    }
-
-}
-
-
-bool isValidCellToMove(const int x, const int y) {
-
-    if(currLevel.map[x][y] == 'W') return false;
-
-    return true;
-}
 
 bool init();
 void closeAll();
@@ -170,7 +120,6 @@ int main(int argc, char *args[]) {
 
             fillLevel(&currLevel, "./assets/maps/mapB.txt");
             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
-            
 
             while(!quit) {
                 while(SDL_PollEvent(&e) != 0) {
@@ -178,39 +127,8 @@ int main(int argc, char *args[]) {
                         quit = true;
 
                     } else if(e.type == SDL_KEYDOWN) {
+                        moveMiner(&miner, &currLevel, e);
                         switch (e.key.keysym.sym) {
-                        case SDLK_UP:
-                            if(isValidCellToMove(miner.row-1, miner.col)) {
-                                currLevel.map[miner.row][miner.col] = 'E';
-                                currLevel.map[miner.row-1][miner.col] = 'P';
-                                miner.row--;    
-                            }
-                            
-                            break;
-                        case SDLK_DOWN:
-                            if(isValidCellToMove(miner.row+1, miner.col)) {
-                                currLevel.map[miner.row][miner.col] = 'E';
-                                currLevel.map[miner.row+1][miner.col] = 'P';
-                                miner.row++;    
-                            }
-                           
-                            break;
-                        case SDLK_LEFT:
-                            if(isValidCellToMove(miner.row, miner.col-1)) {
-                                currLevel.map[miner.row][miner.col] = 'E';
-                                currLevel.map[miner.row][miner.col-1] = 'P';
-                                miner.col--;    
-                            }
-                            
-                            break;
-                        case SDLK_RIGHT:
-                            if(isValidCellToMove(miner.row, miner.col+1)) {
-                                currLevel.map[miner.row][miner.col] = 'E';
-                                currLevel.map[miner.row][miner.col+1] = 'P';
-                                miner.col++;    
-                            }
-                            
-                            break;
                         case SDLK_a:
                             fillLevel(&currLevel, "./assets/maps/mapA.txt");
                             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
@@ -243,7 +161,7 @@ int main(int argc, char *args[]) {
                 
                 currentTime = SDL_GetTicks();
                 if(currentTime > lastTime + 200) {
-                    updateMap();
+                    updateMap(&currLevel);
                     lastTime = currentTime;    
 
                 }
