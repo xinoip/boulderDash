@@ -3,6 +3,7 @@
 pioTextFont_t loadPioTextFont(char *text, SDL_Color color, TTF_Font *font, SDL_Renderer *renderer) {
 
     pioTextFont_t rtr;
+    rtr.text = malloc(sizeof(char) * 100);
     strcpy(rtr.text, text);
     rtr.color = color;
     rtr.font = font;
