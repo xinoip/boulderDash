@@ -2,8 +2,10 @@
 #define RENDER_H
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "./wrappers/pio-texture.h"
 #include "./wrappers/pio-window.h"
+#include "./wrappers/pio-text-font.h"
 #include "./objects/level.h"
 #include "./objects/camera.h"
 #include "./objects/tile.h"
@@ -13,5 +15,9 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
 bool loadMedia(SDL_Renderer *renderer);
 
 void closeMedia();
+
+void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer);
+
+void updateGameBar(level_t level, SDL_Renderer *renderer);
 
 #endif

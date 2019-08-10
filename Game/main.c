@@ -27,7 +27,6 @@ level_t currLevel;
 const char *TITLE = "pioGame";
 
 SDL_Renderer *gRenderer = NULL;
-TTF_Font *gFont = NULL;
 
 bool init();
 void closeAll();
@@ -140,6 +139,7 @@ int main(int argc, char *args[]) {
                         case SDLK_c:
                             fillLevel(&currLevel, "./assets/maps/mapX.txt");
                             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+                            updateGameBar(currLevel, gRenderer);
                             break;
                         default:
                             break;

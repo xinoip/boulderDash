@@ -6,9 +6,36 @@ pioTexture_t dirtTexture;
 pioTexture_t borderTexture;
 pioTexture_t rockTexture;
 
+TTF_Font *gFont = NULL;
+pioTextFont_t mainText;
+pioTextFont_t diamondCount;
+
 bool loadMedia(SDL_Renderer *renderer) {
 
     bool success = true;
+
+    gFont = TTF_OpenFont("./assets/font/zig.ttf", 28);
+    if(gFont == NULL) {
+        printf("Failed to load zig font! SDL_ttf Error: %s\n",TTF_GetError());
+        success = false;
+
+    }
+    SDL_Color textColor = {255,255,255};
+    mainText = loadPioTextFont("init", textColor, gFont, renderer);
+    resizePioTexture(&(mainText.texture), 32, 32);
+    if(mainText.texture.texture == NULL) {
+        printf("Failed to load mainText text image!\n");
+        success = false;
+        
+    }
+    diamondCount = loadPioTextFont("init", textColor, gFont, renderer);
+    resizePioTexture(&(diamondCount.texture), 32, 32);
+    if(diamondCount.texture.texture == NULL) {
+        printf("Failed to load diamondCount text image!\n");
+        success = false;
+        
+    }
+    
 
     playerTexture = loadPioTexture("./assets/image/playerTexture.png", renderer);
     resizePioTexture(&playerTexture, TILE_WIDTH, TILE_HEIGHT);
@@ -102,4 +129,34 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
 
         }
     }
+
+    renderGameBar(level, window, renderer);
+
+}
+
+void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer) {
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 30);
+    
+    SDL_Rect gameBar;
+    gameBar.x = 0,
+    gameBar.y = 0,
+    gameBar.w = window.width,
+    gameBar.h = 50;
+
+    SDL_RenderFillRect(renderer, &gameBar);
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
+
+    updatePioTextFont(&mainText, "Main", renderer);
+    //updatePioTextFont(&diamondCount, "30D", renderer);
+    
+    renderPioTextureCornered(mainText.texture, 0, 0, renderer);
+    renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
+
+}
+
+void updateGameBar(level_t level, SDL_Renderer *renderer) {
+    updatePioTextFont(&diamondCount, "69D", renderer);
+    //renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
 }
