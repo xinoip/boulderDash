@@ -5,6 +5,8 @@ pioTexture_t emptyTexture;
 pioTexture_t dirtTexture;
 pioTexture_t borderTexture;
 pioTexture_t rockTexture;
+pioTexture_t diamondTexture;
+pioTexture_t doorTexture;
 
 TTF_Font *gFont = NULL;
 pioTextFont_t mainText;
@@ -77,6 +79,22 @@ bool loadMedia(SDL_Renderer *renderer) {
 
     }
 
+    diamondTexture = loadPioTexture("./assets/image/diamondTexture.png", renderer);
+    resizePioTexture(&diamondTexture, TILE_WIDTH, TILE_HEIGHT);
+    if(diamondTexture.texture == NULL) {
+        printf("Failed to load diamondTexture image!\n");
+        success = false;
+
+    }
+
+    doorTexture = loadPioTexture("./assets/image/doorTexture.png", renderer);
+    resizePioTexture(&doorTexture, TILE_WIDTH, TILE_HEIGHT);
+    if(doorTexture.texture == NULL) {
+        printf("Failed to load doorTexture image!\n");
+        success = false;
+
+    }
+
     return success;
 
 }
@@ -121,6 +139,12 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
                     break;
                 case 'B':
                     renderPioTexture(rockTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
+                    break;
+                case 'X':
+                    renderPioTexture(diamondTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
+                    break;
+                case 'Z':
+                    renderPioTexture(doorTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
                 default:
                     break;
