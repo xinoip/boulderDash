@@ -2,12 +2,13 @@
 #include "./level.h"
 
 //create level_t and allocate space for level array
-level_t createLevel(int row, int col, int minerRow, int minerCol) {
+level_t createLevel(int row, int col, int minerRow, int minerCol, int diamondCount) {
     level_t rtr;
     rtr.row = row;
     rtr.col = col;
     rtr.startMinerRow = minerRow;
     rtr.startMinerCol = minerCol;
+    rtr.diamondCount = diamondCount;
 
     rtr.map = (char **) malloc(row * sizeof(char *));
 
@@ -25,6 +26,7 @@ void fillLevel(level_t *level, char *filename) {
     int LINE_LENGTH = 255;
     char buffer[LINE_LENGTH];
     int row, col, minerRow, minerCol;
+    int diamondCount;
 
     char currChar;
 
@@ -44,7 +46,12 @@ void fillLevel(level_t *level, char *filename) {
     fscanf(fp, "%d", &minerRow);
     fscanf(fp, "%d", &minerCol);
 
-    *level = createLevel(row, col, minerRow, minerCol);
+    //fscanf(fp, "%c", &currChar); //read carriage return only for windows files
+    fscanf(fp, "%c", &currChar); //read new line
+
+    fscanf(fp, "%d", &diamondCount);
+
+    *level = createLevel(row, col, minerRow, minerCol, diamondCount);
 
     while(currChar != '-') {
         fscanf(fp, "%c", &currChar);
