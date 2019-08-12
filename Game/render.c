@@ -11,6 +11,7 @@ pioTexture_t doorTexture;
 TTF_Font *gFont = NULL;
 pioTextFont_t mainText;
 pioTextFont_t diamondCount;
+pioTextFont_t mapTimer;
 
 bool loadMedia(SDL_Renderer *renderer) {
 
@@ -37,8 +38,14 @@ bool loadMedia(SDL_Renderer *renderer) {
         success = false;
         
     }
+    mapTimer = loadPioTextFont("init", textColor, gFont, renderer);
+    resizePioTexture(&(mapTimer.texture), 32, 32);
+    if(mapTimer.texture.texture == NULL) {
+        printf("Failed to load mapTimer text image!\n");
+        success = false;
+        
+    }
     
-
     playerTexture = loadPioTexture("./assets/image/playerTexture.png", renderer);
     resizePioTexture(&playerTexture, TILE_WIDTH, TILE_HEIGHT);
     if(playerTexture.texture == NULL) {
@@ -172,15 +179,25 @@ void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer) {
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
 
-    updatePioTextFont(&mainText, "Main", renderer);
-    //updatePioTextFont(&diamondCount, "30D", renderer);
+    //updatePioTextFont(&mainText, "Main", renderer);
+    //updatePioTextFont(&diamondCount, "0D", renderer);
     
     renderPioTextureCornered(mainText.texture, 0, 0, renderer);
     renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
+    renderPioTextureCornered(mapTimer.texture, 500, 0, renderer);
 
 }
 
 void updateGameBar(level_t level, SDL_Renderer *renderer) {
-    updatePioTextFont(&diamondCount, "69D", renderer);
+    char diaText[5];
+    char mapTimeText[12];
+    sprintf(mapTimeText, "%d", level.timeLimit);
+    if(level.diamondCount <= 0) {
+        updatePioTextFont(&diamondCount, "Door Open", renderer);    
+    } else {
+        sprintf(diaText, "%d", level.diamondCount);
+        updatePioTextFont(&diamondCount, diaText, renderer);
+    }
+    updatePioTextFont(&mapTimer, mapTimeText, renderer);
     //renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
 }
