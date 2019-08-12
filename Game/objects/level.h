@@ -8,6 +8,7 @@ typedef struct Level {
     int row, col;
     int startMinerRow, startMinerCol;
     int diamondCount;
+    int timeLimit;
 } level_t;
 
 level_t createLevel(int row, int col, int minerRow, int minerCol, int diamondCount);

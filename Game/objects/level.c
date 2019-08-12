@@ -10,6 +10,9 @@ level_t createLevel(int row, int col, int minerRow, int minerCol, int diamondCou
     rtr.startMinerCol = minerCol;
     rtr.diamondCount = diamondCount;
 
+    // SHOULD PULL FROM FILE!!!
+    rtr.timeLimit = 300;
+
     rtr.map = (char **) malloc(row * sizeof(char *));
 
     for(int i = 0; i < row; i++) {
