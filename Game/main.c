@@ -105,6 +105,7 @@ void closeAll() {
 int main(int argc, char *args[]) {
 
     Uint32 lastTime = 0, currentTime;
+    Uint32 levelTime = 0, levelLastTime;
     if(!init()) {
         printf("Failed to initialize!\n");
 
@@ -166,12 +167,21 @@ int main(int argc, char *args[]) {
 
                 }
 
+                levelTime = SDL_GetTicks();
+                if(levelTime > levelLastTime + 1000) {
+                    currLevel.timeLimit--;
+                    levelLastTime = levelTime;
+                    
+                }
+
+                updateGameBar(currLevel, gRenderer);
+
                 updateCameraPosition(&camera, miner.row, miner.col);
 
                 renderMap(currLevel, camera, gameWindow, gRenderer);
 
                 SDL_RenderPresent(gRenderer);
-                //
+                
             }
 
         }
