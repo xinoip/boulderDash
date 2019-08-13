@@ -7,6 +7,7 @@ pioTexture_t borderTexture;
 pioTexture_t rockTexture;
 pioTexture_t diamondTexture;
 pioTexture_t doorTexture;
+pioTexture_t spiderTexture;
 
 TTF_Font *gFont = NULL;
 pioTextFont_t mainText;
@@ -102,6 +103,14 @@ bool loadMedia(SDL_Renderer *renderer) {
 
     }
 
+    spiderTexture = loadPioTexture("./assets/image/spiderTexture.png", renderer);
+    resizePioTexture(&spiderTexture, TILE_WIDTH, TILE_HEIGHT);
+    if(spiderTexture.texture == NULL) {
+        printf("Failed to load doorTexture image!\n");
+        success = false;
+
+    }
+
     return success;
 
 }
@@ -152,6 +161,9 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
                     break;
                 case 'Z':
                     renderPioTexture(doorTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
+                    break;
+                case 'S':
+                    renderPioTexture(spiderTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
                 default:
                     break;
