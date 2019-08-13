@@ -119,6 +119,7 @@ int main(int argc, char *args[]) {
             SDL_Event e;
 
             fillLevel(&currLevel, "./assets/maps/mapB.txt");
+            //fillLevel(&currLevel, "./assets/maps/albu.txt");
             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
 
             while(!quit) {
@@ -134,7 +135,7 @@ int main(int argc, char *args[]) {
                             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
                             break;
                         case SDLK_b:
-                            fillLevel(&currLevel, "./assets/maps/mapB.txt");
+                            fillLevel(&currLevel, "./assets/maps/albu.txt");
                             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
                             break;
                         case SDLK_c:
