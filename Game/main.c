@@ -163,7 +163,7 @@ int main(int argc, char *args[]) {
                 
                 currentTime = SDL_GetTicks();
                 if(currentTime > lastTime + 200) {
-                    updateMap(&currLevel);
+                    updateMap(&currLevel, &miner);
                     lastTime = currentTime;    
 
                 }

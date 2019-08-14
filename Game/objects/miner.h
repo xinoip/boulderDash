@@ -1,6 +1,8 @@
 #ifndef MINER_H
 #define MINER_H
 
+typedef struct Miner miner_t;
+
 #include <SDL2/SDL.h>
 #include <stdlib.h>
 #include "./level.h"
