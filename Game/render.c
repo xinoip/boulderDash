@@ -8,6 +8,7 @@ pioTexture_t rockTexture;
 pioTexture_t diamondTexture;
 pioTexture_t doorTexture;
 pioTexture_t spiderTexture;
+pioTexture_t monsterTexture;
 
 TTF_Font *gFont = NULL;
 pioTextFont_t mainText;
@@ -106,7 +107,15 @@ bool loadMedia(SDL_Renderer *renderer) {
     spiderTexture = loadPioTexture("./assets/image/spiderTexture.png", renderer);
     resizePioTexture(&spiderTexture, TILE_WIDTH, TILE_HEIGHT);
     if(spiderTexture.texture == NULL) {
-        printf("Failed to load doorTexture image!\n");
+        printf("Failed to load spiderTexture image!\n");
+        success = false;
+
+    }
+
+    monsterTexture = loadPioTexture("./assets/image/monsterTexture.png", renderer);
+    resizePioTexture(&monsterTexture, TILE_WIDTH, TILE_HEIGHT);
+    if(monsterTexture.texture == NULL) {
+        printf("Failed to load monsterTexture image!\n");
         success = false;
 
     }
@@ -121,6 +130,10 @@ void closeMedia() {
     destroyPioTexture(&playerTexture);
     destroyPioTexture(&emptyTexture);
     destroyPioTexture(&rockTexture);
+    destroyPioTexture(&diamondTexture);
+    destroyPioTexture(&doorTexture);
+    destroyPioTexture(&spiderTexture);
+    destroyPioTexture(&monsterTexture);
 }
 
 void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
@@ -164,6 +177,9 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
                     break;
                 case 'S':
                     renderPioTexture(spiderTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
+                    break;
+                case 'L':
+                    renderPioTexture(monsterTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
                 default:
                     break;
