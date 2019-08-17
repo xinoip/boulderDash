@@ -5,6 +5,7 @@ typedef struct Miner miner_t;
 
 #include <SDL2/SDL.h>
 #include <stdlib.h>
+#include "../base.h"
 #include "./level.h"
 #include "./controls.h"
 

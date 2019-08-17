@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include "./base.h"
 #include "./wrappers/pio-texture.h"
 #include "./wrappers/pio-window.h"
 #include "./wrappers/pio-text-font.h"

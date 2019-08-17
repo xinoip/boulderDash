@@ -151,34 +151,47 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
             
             if(isInsideCamera(window, camera, i, j)) {
                 switch (level.map[i][j]) {
-                case 'W':
+                case borderTile:
                     renderPioTexture(borderTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                case 'P':
+                case playerTile:
                     renderPioTexture(playerTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                case 'D':
+                case dirtTile:
                     renderPioTexture(dirtTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                case 'E':
+                case emptyTile:
                     renderPioTexture(emptyTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                case 'R':
+                case rockTile:
                     renderPioTexture(rockTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                case 'B':
+                //case 'B':
+                case fallingRockTile:
                     renderPioTexture(rockTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                case 'X':
+                //case 'X':
+                case diamondTile:
                     renderPioTexture(diamondTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                case 'Z':
+                case fallingDiamondTile:
+                    renderPioTexture(diamondTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
+                    break;
+                //case 'Z':
+                case doorTile:
                     renderPioTexture(doorTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                case 'S':
+                case spiderTile:
                     renderPioTexture(spiderTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                case 'L':
+                case movingSpiderTile:
+                    renderPioTexture(spiderTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
+                    break;
+                //case 'L':
+                case monsterTile:
+                    renderPioTexture(monsterTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
+                    break;
+                case movingMonsterTile:
                     renderPioTexture(monsterTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
                 default:
