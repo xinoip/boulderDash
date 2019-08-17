@@ -152,6 +152,10 @@ void updateSpiders(level_t *level, miner_t *miner) {
 
 }
 
+void updateMonsters(level_t *level, miner_t *miner, int row, int col) {
+    
+}
+
 void generateDiaOnDeath(level_t *level, int row, int col) {
 
     level->map[row][col] = 'X';
