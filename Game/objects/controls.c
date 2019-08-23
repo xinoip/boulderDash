@@ -39,15 +39,15 @@ void updateFallingObjects(level_t *level, miner_t *miner) {
 
                     }
 
-                } else if(level->map[row][col] == fallingRockTile && level->map[row+1][col] == spiderTile) { // Crashing spiders
+                } else if(level->map[row][col] == rockTile && level->map[row+1][col] == spiderTile) { // Crashing spiders
                     level->map[row][col] = emptyTile;
                     level->map[row+1][col] = fallingRockTile;
-                    generateDiaOnDeath(level, row+1, col);
+                    generateDiaOnDeath(level, row+1, col, false);
 
-                } else if(level->map[row][col] == fallingRockTile && level->map[row+1][col] == monsterTile) { // Crashing monsters
+                } else if(level->map[row][col] == rockTile && level->map[row+1][col] == monsterTile) { // Crashing monsters
                     level->map[row][col] = emptyTile;
                     level->map[row+1][col] = fallingRockTile;
-                    generateDiaOnDeath(level, row+1, col);
+                    generateDiaOnDeath(level, row+1, col, true);
 
                 } 
 
@@ -216,7 +216,7 @@ void updateMonsters(level_t *level, miner_t *miner) {
 
 }
 
-void generateDiaOnDeath(level_t *level, int row, int col) {
+void generateDiaOnDeath(level_t *level, int row, int col, bool isMonster) {
 
     level->map[row][col] = diamondTile;
 
@@ -243,6 +243,21 @@ void generateDiaOnDeath(level_t *level, int row, int col) {
     } 
     if(level->map[row+1][col-1] != borderTile && level->map[row+1][col-1] != playerTile) { //sol-asagi
         level->map[row+1][col-1] = diamondTile;
+    }
+    if(isMonster == true) {
+        if(level->map[row-2][col] != borderTile && level->map[row-2][col] != playerTile) { //iki yukari
+           level->map[row-2][col] = diamondTile;
+        }
+        if(level->map[row+2][col] != borderTile && level->map[row+2][col] != playerTile) { //iki asagi
+           level->map[row+2][col] = diamondTile;
+        }
+        if(level->map[row][col+2] != borderTile && level->map[row][col+2] != playerTile) { //iki sag
+           level->map[row][col+2] = diamondTile;
+        }
+        if(level->map[row][col-2] != borderTile && level->map[row][col-2] != playerTile) { //iki sol
+           level->map[row][col-2] = diamondTile;
+        }
+
     }
 
 }
