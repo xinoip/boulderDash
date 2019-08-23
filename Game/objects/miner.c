@@ -4,6 +4,7 @@ miner_t createMiner(int row, int col) {
     miner_t rtr;
     rtr.row = row;
     rtr.col = col;
+    rtr.level = 1;
     return rtr;
 }
 
@@ -107,7 +108,17 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
                 }
             break;
         case doorTile:   // DOOR LEVEL CHANGE
-            fillLevel(level, "./assets/maps/mapX.txt");
+            miner->level++;
+            switch (miner->level) {
+            case 2:
+                fillLevel(level, "./assets/maps/cave_2.txt");    
+                break;
+            case 3:
+                fillLevel(level, "./assets/maps/cave_3.txt");
+                break;
+            default:
+                break;
+            }
             updateMiner(miner, level->startMinerRow, level->startMinerCol);
             break;
         default:

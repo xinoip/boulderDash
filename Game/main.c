@@ -13,8 +13,8 @@
 #include "./render.h"
 #include "./objects/controls.h"
 
-#define INIT_WIDTH 640
-#define INIT_HEIGHT 480
+#define INIT_WIDTH 1366
+#define INIT_HEIGHT 720
 
 #define INIT_MINER_ROW 2
 #define INIT_MINER_COL 3
@@ -119,7 +119,7 @@ int main(int argc, char *args[]) {
 
             SDL_Event e;
 
-            fillLevel(&currLevel, "./assets/maps/mapB.txt");
+            fillLevel(&currLevel, "./assets/maps/cave_1.txt");
             //fillLevel(&currLevel, "./assets/maps/albu.txt");
             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
 

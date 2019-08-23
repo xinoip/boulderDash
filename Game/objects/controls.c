@@ -171,8 +171,8 @@ void updateMonsters(level_t *level, miner_t *miner, camera_t camera, pioWindow_t
                 // kill miner if possible
                 if(level->map[row][col+1] == playerTile || level->map[row][col-1] == playerTile || level->map[row+1][col] == playerTile || level->map[row-1][col] == playerTile) {
                     level->map[row][col] = emptyTile;
-                    killMiner(level, miner, camera, window, renderer, monsterTile);
                     level->map[miner->row][miner->col] = monsterTile;
+                    killMiner(level, miner, camera, window, renderer, monsterTile);
 
                 } else if(targetRow > row) { // miner on bottom
                     if(level->map[row+1][col] == emptyTile) {
@@ -312,6 +312,9 @@ void killMiner(level_t *level, miner_t *miner, camera_t camera, pioWindow_t wind
             break;
         case spiderTile:
             level->map[miner->row][miner->col] = spiderTile;
+            break;
+        case monsterTile:
+            level->map[miner->row][miner->col] = monsterTile;
             break;
     }
     renderOnDeath(*level, camera, window, renderer);
