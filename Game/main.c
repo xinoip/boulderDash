@@ -106,6 +106,7 @@ int main(int argc, char *args[]) {
 
     Uint32 lastTime = 0, currentTime;
     Uint32 levelTime = 0, levelLastTime;
+    Uint32 waterTime = 0, waterLastTime;
     if(!init()) {
         printf("Failed to initialize!\n");
 
@@ -173,6 +174,13 @@ int main(int argc, char *args[]) {
                     currLevel.timeLimit--;
                     levelLastTime = levelTime;
                     
+                }
+
+                waterTime = SDL_GetTicks();
+                if(waterTime > waterLastTime + currLevel.waterMs) {
+                    updateWater(&currLevel);
+                    waterLastTime = waterTime;
+
                 }
 
                 updateGameBar(currLevel, gRenderer);

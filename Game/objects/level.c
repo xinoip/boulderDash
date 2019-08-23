@@ -12,6 +12,7 @@ level_t createLevel(int row, int col, int minerRow, int minerCol, int diamondCou
 
     // SHOULD PULL FROM FILE!!!
     rtr.timeLimit = 300;
+    rtr.waterMs = 1400;
 
     rtr.map = (char **) malloc(row * sizeof(char *));
 

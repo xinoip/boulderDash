@@ -12,4 +12,6 @@ bool isValidCellToMove(level_t level, int row, int col);
 
 void updateMap(level_t *level, miner_t *miner);
 
+void updateWater(level_t *level);
+
 #endif

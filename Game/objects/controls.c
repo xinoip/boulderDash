@@ -216,6 +216,47 @@ void updateMonsters(level_t *level, miner_t *miner) {
 
 }
 
+void updateWater(level_t *level) {
+
+    for(int row = 0; row < level->row; row++) {
+        for(int col = 0; col < level->col; col++) {
+            if(level->map[row][col] == waterTile) {
+                if(level->map[row+1][col] == dirtTile) { // bottom
+                    level->map[row+1][col] = movingWaterTile;
+
+                }
+                if(level->map[row-1][col] == dirtTile) { // top
+                    level->map[row-1][col] = movingWaterTile;
+
+                }
+                if(level->map[row][col-1] == dirtTile) { // left
+                    level->map[row][col-1] = movingWaterTile;
+
+                }
+                if(level->map[row][col+1] == dirtTile) { // right
+                    level->map[row][col+1] = movingWaterTile;
+
+                }
+
+            }
+
+        }
+
+    }
+
+    for(int row = 0; row < level->row; row++) {
+        for(int col = 0; col < level->col; col++) {
+            if(level->map[row][col] == movingWaterTile) {
+                level->map[row][col] = waterTile;
+
+            }
+
+        }
+
+    }
+
+}
+
 void generateDiaOnDeath(level_t *level, int row, int col, bool isMonster) {
 
     level->map[row][col] = diamondTile;
