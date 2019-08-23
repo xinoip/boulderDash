@@ -140,7 +140,7 @@ int main(int argc, char *args[]) {
                             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
                             break;
                         case SDLK_c:
-                            fillLevel(&currLevel, "./assets/maps/mapX.txt");
+                            fillLevel(&currLevel, "./assets/maps/cave_1.txt");
                             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
                             updateGameBar(currLevel, gRenderer);
                             break;

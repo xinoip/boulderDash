@@ -39,7 +39,7 @@ void updateFallingObjects(level_t *level, miner_t *miner) {
 
                     }
 
-                } else if(level->map[row][col] == rockTile && level->map[row+1][col] == spiderTile) { // Crashing spiders
+                } else if(level->map[row][col] == rockTile && level->map[row+1][col] == spiderTile) { // Crashing spiders PROBLEM
                     level->map[row][col] = emptyTile;
                     level->map[row+1][col] = fallingRockTile;
                     generateDiaOnDeath(level, row+1, col, false);
