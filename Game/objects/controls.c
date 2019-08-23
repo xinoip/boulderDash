@@ -11,6 +11,7 @@ bool isValidCellToMove(level_t level, int row, int col) {
 void updateMap(level_t *level, miner_t *miner) {
     updateFallingObjects(level, miner);
     updateSpiders(level, miner);
+    updateMonsters(level, miner);
 }
 
 void updateFallingObjects(level_t *level, miner_t *miner) {
@@ -152,8 +153,62 @@ void updateSpiders(level_t *level, miner_t *miner) {
 
 }
 
-void updateMonsters(level_t *level, miner_t *miner, int row, int col) {
+void updateMonsters(level_t *level, miner_t *miner) {
     
+    int targetRow = miner->row;
+    int targetCol = miner->col;
+
+    for(int row = 0; row < level->row; row++) {
+        for(int col = 0; col < level->col; col++) {
+
+            if(level->map[row][col] == monsterTile) {
+                // kill miner if possible
+                if(level->map[row][col+1] == playerTile || level->map[row][col-1] == playerTile || level->map[row+1][col] == playerTile || level->map[row-1][col] == playerTile) {
+                    level->map[row][col] = emptyTile;
+                    level->map[miner->row][miner->col] = monsterTile;
+                    killMiner(level, miner);
+
+                } else if(targetRow > row) { // miner on bottom
+                    if(level->map[row+1][col] == emptyTile) {
+                        level->map[row][col] = emptyTile;
+                        level->map[row+1][col] = monsterTile;
+
+                    }
+
+                } else if(targetRow < row) { // miner on top
+                    if(level->map[row-1][col] == emptyTile) {
+                        level->map[row][col] = emptyTile;
+                        level->map[row-1][col] = monsterTile;
+
+                    }    
+
+                } else if(targetRow == row) { // miner on same level
+                    if(targetCol > col) { // miner on right
+                        if(level->map[row][col+1] == emptyTile) {
+                            level->map[row][col] = emptyTile;
+                            level->map[row][col+1] = monsterTile;
+
+                        }
+
+                    } else if(targetCol < col) { // miner on left
+                        if(level->map[row][col-1] == emptyTile) {
+                            level->map[row][col] = emptyTile;
+                            level->map[row][col-1] = monsterTile;
+                            
+                        }
+
+                    } else if(targetCol == col) { // miner on same col
+                        
+
+                    }
+
+                }
+
+            }
+
+        }
+    }
+
 }
 
 void generateDiaOnDeath(level_t *level, int row, int col) {
