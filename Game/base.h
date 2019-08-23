@@ -19,5 +19,6 @@ typedef enum {false, true} bool;
 #define movingMonsterTile 'm'
 #define fallingRockTile 'r'
 #define movingSpiderTile 's'
+#define waterTile 'd'
 
 #endif

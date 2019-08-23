@@ -9,6 +9,7 @@ pioTexture_t diamondTexture;
 pioTexture_t doorTexture;
 pioTexture_t spiderTexture;
 pioTexture_t monsterTexture;
+pioTexture_t waterTexture;
 
 TTF_Font *gFont = NULL;
 pioTextFont_t mainText;
@@ -120,6 +121,14 @@ bool loadMedia(SDL_Renderer *renderer) {
 
     }
 
+    waterTexture = loadPioTexture("./assets/image/waterTexture.jpg", renderer);
+    resizePioTexture(&waterTexture, TILE_WIDTH, TILE_HEIGHT);
+    if(waterTexture.texture == NULL) {
+        printf("Failed to load waterTexture image!\n");
+        success = false;
+
+    }
+
     return success;
 
 }
@@ -134,6 +143,7 @@ void closeMedia() {
     destroyPioTexture(&doorTexture);
     destroyPioTexture(&spiderTexture);
     destroyPioTexture(&monsterTexture);
+    destroyPioTexture(&waterTexture);
 }
 
 void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
@@ -193,6 +203,9 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
                     break;
                 case movingMonsterTile:
                     renderPioTexture(monsterTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
+                    break;
+                case waterTile:
+                    renderPioTexture(waterTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
                 default:
                     break;
