@@ -164,7 +164,7 @@ int main(int argc, char *args[]) {
                 
                 currentTime = SDL_GetTicks();
                 if(currentTime > lastTime + 200) {
-                    updateMap(&currLevel, &miner);
+                    updateMap(&currLevel, &miner, camera, gameWindow, gRenderer);
                     lastTime = currentTime;    
 
                 }

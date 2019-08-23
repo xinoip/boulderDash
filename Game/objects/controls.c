@@ -1,4 +1,5 @@
 #include "./controls.h"
+#include "../render.h"
 
 bool isValidCellToMove(level_t level, int row, int col) {
 
@@ -8,13 +9,13 @@ bool isValidCellToMove(level_t level, int row, int col) {
 
 }
 
-void updateMap(level_t *level, miner_t *miner) {
-    updateFallingObjects(level, miner);
-    updateSpiders(level, miner);
-    updateMonsters(level, miner);
+void updateMap(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
+    updateFallingObjects(level, miner, camera, window, renderer);
+    updateSpiders(level, miner, camera, window, renderer);
+    updateMonsters(level, miner, camera, window, renderer);
 }
 
-void updateFallingObjects(level_t *level, miner_t *miner) {
+void updateFallingObjects(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
     char fallingSymbol;
     for(int row = 0; row < level->row; row++) {
         for(int col = 0; col < level->col; col++) {
@@ -63,8 +64,8 @@ void updateFallingObjects(level_t *level, miner_t *miner) {
             if(level->map[row][col] == fallingRockTile) { // Falling rocks
                 if(level->map[row+1][col] == playerTile) { // Crashin player
                     level->map[row][col] = emptyTile;
+                    killMiner(level, miner, camera, window, renderer, rockTile);
                     level->map[row+1][col] = rockTile;
-                    killMiner(level, miner);
 
                 } else { // Just convert to stationary
                     level->map[row][col] = rockTile;
@@ -84,7 +85,7 @@ void updateFallingObjects(level_t *level, miner_t *miner) {
     }
 }
 
-void updateSpiders(level_t *level, miner_t *miner) {
+void updateSpiders(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
 
     for(int row = 0; row < level->row; row++) {
         for(int col = 0; col < level->col; col++) {
@@ -93,23 +94,23 @@ void updateSpiders(level_t *level, miner_t *miner) {
 
                 if(level->map[row][col+1] == playerTile) { // Kill player right
                     level->map[row][col] = emptyTile;
+                    killMiner(level, miner, camera, window, renderer, spiderTile);
                     level->map[row][col+1] = movingSpiderTile;
-                    killMiner(level, miner);
 
                 } else if(level->map[row+1][col] == playerTile) { // Kill player bottom
                     level->map[row][col] = emptyTile;
+                    killMiner(level, miner, camera, window, renderer, spiderTile); 
                     level->map[row+1][col] = movingSpiderTile;
-                    killMiner(level, miner); 
 
                 } else if(level->map[row][col-1] == playerTile) { // Kill player left
                     level->map[row][col] = emptyTile;
+                    killMiner(level, miner, camera, window, renderer, spiderTile);
                     level->map[row][col-1] = movingSpiderTile;
-                    killMiner(level, miner);
 
                 } else if(level->map[row-1][col] == playerTile) { // Kill player up
+                    killMiner(level, miner, camera, window, renderer, spiderTile);
                     level->map[row][col] = emptyTile;
                     level->map[row-1][col] = movingSpiderTile;
-                    killMiner(level, miner);
 
                 } else {
                     // No player in range
@@ -158,7 +159,7 @@ void updateSpiders(level_t *level, miner_t *miner) {
 
 }
 
-void updateMonsters(level_t *level, miner_t *miner) {
+void updateMonsters(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
     
     int targetRow = miner->row;
     int targetCol = miner->col;
@@ -170,8 +171,8 @@ void updateMonsters(level_t *level, miner_t *miner) {
                 // kill miner if possible
                 if(level->map[row][col+1] == playerTile || level->map[row][col-1] == playerTile || level->map[row+1][col] == playerTile || level->map[row-1][col] == playerTile) {
                     level->map[row][col] = emptyTile;
+                    killMiner(level, miner, camera, window, renderer, monsterTile);
                     level->map[miner->row][miner->col] = monsterTile;
-                    killMiner(level, miner);
 
                 } else if(targetRow > row) { // miner on bottom
                     if(level->map[row+1][col] == emptyTile) {
@@ -303,8 +304,19 @@ void generateDiaOnDeath(level_t *level, int row, int col, bool isMonster) {
 
 }
 
-void killMiner(level_t *level, miner_t *miner) {
+void killMiner(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer, char deathCause) {
     printf("YOU DIED\n");
+    switch(deathCause) {
+        case rockTile:
+            level->map[miner->row][miner->col] = rockTile;
+            break;
+        case spiderTile:
+            level->map[miner->row][miner->col] = spiderTile;
+            break;
+    }
+    renderOnDeath(*level, camera, window, renderer);
+    SDL_RenderPresent(renderer);
+    SDL_Delay(2000);
     miner->row = level->startMinerRow;
     miner->col = level->startMinerCol;
     level->map[miner->row][miner->col] = playerTile;

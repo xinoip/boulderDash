@@ -10,6 +10,7 @@ pioTexture_t doorTexture;
 pioTexture_t spiderTexture;
 pioTexture_t monsterTexture;
 pioTexture_t waterTexture;
+pioTexture_t deathTexture;
 
 TTF_Font *gFont = NULL;
 pioTextFont_t mainText;
@@ -129,6 +130,14 @@ bool loadMedia(SDL_Renderer *renderer) {
 
     }
 
+    deathTexture = loadPioTexture("./assets/image/deathTexture.png", renderer);
+    resizePioTexture(&deathTexture, TILE_WIDTH, TILE_HEIGHT);
+    if(deathTexture.texture == NULL) {
+        printf("Failed to load deathTexture image!\n");
+        success = false;
+
+    }
+
     return success;
 
 }
@@ -207,6 +216,9 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
                 case waterTile:
                     renderPioTexture(waterTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
+                case dyingMinerTile:
+                    renderPioTexture(deathTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
+                    break;
                 default:
                     break;
                 }
@@ -254,4 +266,8 @@ void updateGameBar(level_t level, SDL_Renderer *renderer) {
     }
     updatePioTextFont(&mapTimer, mapTimeText, renderer);
     //renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
+}
+
+void renderOnDeath(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
+    renderMap(level, camera, window, renderer);
 }
