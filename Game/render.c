@@ -21,6 +21,7 @@ pioTextFont_t mainText;
 pioTextFont_t diamondCount;
 pioTextFont_t mapTimer;
 pioTextFont_t minerLives;
+pioTextFont_t levelName;
 
 bool loadMedia(SDL_Renderer *renderer) {
 
@@ -33,10 +34,10 @@ bool loadMedia(SDL_Renderer *renderer) {
 
     }
     SDL_Color textColor = {255,255,255};
-    mainText = loadPioTextFont("init", textColor, gFont, renderer);
-    resizePioTexture(&(mainText.texture), 32, 32);
-    if(mainText.texture.texture == NULL) {
-        printf("Failed to load mainText text image!\n");
+    levelName = loadPioTextFont("init", textColor, gFont, renderer);
+    resizePioTexture(&(levelName.texture), 32, 32);
+    if(levelName.texture.texture == NULL) {
+        printf("Failed to load levelName text image!\n");
         success = false;
         
     }
@@ -291,7 +292,7 @@ void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer, bo
     //updatePioTextFont(&mainText, "Main", renderer);
     //updatePioTextFont(&diamondCount, "0D", renderer);
     
-    renderPioTextureCornered(mainText.texture, 0, 0, renderer);
+    renderPioTextureCornered(levelName.texture, 0, 0, renderer);
     //renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
 
     if(isPaused) {
@@ -309,7 +310,6 @@ void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer, bo
     renderPioTextureCornered(diamondCount.texture, (window.width / 2) - 32, 0, renderer);
     renderPioTextureCornered(diamondSymbolTexture, (window.width / 2) - 64, 0, renderer);
 
-
 }
 
 void updateGameBar(level_t level, SDL_Renderer *renderer, int lives) {
@@ -326,6 +326,7 @@ void updateGameBar(level_t level, SDL_Renderer *renderer, int lives) {
     }
     updatePioTextFont(&mapTimer, mapTimeText, renderer);
     updatePioTextFont(&minerLives, minerLivesText, renderer);
+    updatePioTextFont(&levelName, level.name, renderer);
     //renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
 }
 

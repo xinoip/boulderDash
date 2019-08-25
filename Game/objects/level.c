@@ -2,7 +2,7 @@
 #include "./level.h"
 
 //create level_t and allocate space for level array
-level_t createLevel(int row, int col, int minerRow, int minerCol, int diamondCount) {
+level_t createLevel(int row, int col, int minerRow, int minerCol, int diamondCount, char *levelName, int timeLimit, int waterMs) {
     level_t rtr;
     rtr.row = row;
     rtr.col = col;
@@ -10,9 +10,12 @@ level_t createLevel(int row, int col, int minerRow, int minerCol, int diamondCou
     rtr.startMinerCol = minerCol;
     rtr.diamondCount = diamondCount;
 
-    // SHOULD PULL FROM FILE!!!
-    rtr.timeLimit = 300;
-    rtr.waterMs = 1400;
+    rtr.name = malloc(sizeof(char) * 255);
+    strcpy(rtr.name, levelName);
+
+    rtr.timeLimit = timeLimit;
+    rtr.waterMs = waterMs;
+    
 
     rtr.map = (char **) malloc(row * sizeof(char *));
 
@@ -31,6 +34,8 @@ void fillLevel(level_t *level, char *filename) {
     char buffer[LINE_LENGTH];
     int row, col, minerRow, minerCol;
     int diamondCount;
+    int waterMs;
+    int timeLimit;
 
     char currChar;
 
@@ -40,6 +45,17 @@ void fillLevel(level_t *level, char *filename) {
         return;
 
     }
+
+    fgets(buffer, 255, fp);
+    for(int i = 0; i < 255; i++) {
+        if(buffer[i] == '\n') {
+            buffer[i] = '\0';
+            break;
+        }
+    }
+
+    //fscanf(fp, "%c", &currChar); //read carriage return only for windows files
+    //fscanf(fp, "%c", &currChar); //read new line
 
     fscanf(fp, "%d", &row);
     fscanf(fp, "%d", &col);
@@ -55,7 +71,13 @@ void fillLevel(level_t *level, char *filename) {
 
     fscanf(fp, "%d", &diamondCount);
 
-    *level = createLevel(row, col, minerRow, minerCol, diamondCount);
+    //fscanf(fp, "%c", &currChar); //read carriage return only for windows files
+    fscanf(fp, "%c", &currChar); //read new line
+
+    fscanf(fp, "%d", &timeLimit);
+    fscanf(fp, "%d", &waterMs);
+
+    *level = createLevel(row, col, minerRow, minerCol, diamondCount, buffer, timeLimit, waterMs);
 
     while(currChar != '-') {
         fscanf(fp, "%c", &currChar);

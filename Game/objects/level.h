@@ -10,9 +10,10 @@ typedef struct Level {
     int diamondCount;
     int timeLimit;
     int waterMs;
+    char *name;
 } level_t;
 
-level_t createLevel(int row, int col, int minerRow, int minerCol, int diamondCount);
+level_t createLevel(int row, int col, int minerRow, int minerCol, int diamondCount, char *levelName, int timeLimit, int waterMs);
 
 void fillLevel(level_t *level, char *filename);
 
