@@ -199,6 +199,8 @@ int main(int argc, char *args[]) {
 
                 renderMap(currLevel, camera, gameWindow, gRenderer);
 
+                renderGameBar(currLevel, gameWindow, gRenderer, pause);
+
                 SDL_RenderPresent(gRenderer);
                 
             }

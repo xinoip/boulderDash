@@ -17,7 +17,7 @@ bool loadMedia(SDL_Renderer *renderer);
 
 void closeMedia();
 
-void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer);
+void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer, bool isPaused);
 
 void updateGameBar(level_t level, SDL_Renderer *renderer);
 

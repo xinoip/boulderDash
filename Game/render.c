@@ -10,7 +10,8 @@ pioTexture_t doorTexture;
 pioTexture_t spiderTexture;
 pioTexture_t monsterTexture;
 pioTexture_t waterTexture;
-pioTexture_t deathTexture;
+pioTexture_t pauseTexture;
+pioTexture_t playTexture;
 
 TTF_Font *gFont = NULL;
 pioTextFont_t mainText;
@@ -130,10 +131,18 @@ bool loadMedia(SDL_Renderer *renderer) {
 
     }
 
-    deathTexture = loadPioTexture("./assets/image/deathTexture.png", renderer);
-    resizePioTexture(&deathTexture, TILE_WIDTH, TILE_HEIGHT);
-    if(deathTexture.texture == NULL) {
-        printf("Failed to load deathTexture image!\n");
+    pauseTexture = loadPioTexture("./assets/image/pauseTexture.png", renderer);
+    resizePioTexture(&pauseTexture, 32, 32);
+    if(pauseTexture.texture == NULL) {
+        printf("Failed to load pauseTexture image!\n");
+        success = false;
+
+    }
+
+    playTexture = loadPioTexture("./assets/image/playTexture.png", renderer);
+    resizePioTexture(&playTexture, 32, 32);
+    if(playTexture.texture == NULL) {
+        printf("Failed to load playTexture image!\n");
         success = false;
 
     }
@@ -153,6 +162,7 @@ void closeMedia() {
     destroyPioTexture(&spiderTexture);
     destroyPioTexture(&monsterTexture);
     destroyPioTexture(&waterTexture);
+    destroyPioTexture(&pauseTexture);
 }
 
 void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
@@ -216,9 +226,6 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
                 case waterTile:
                     renderPioTexture(waterTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                case dyingMinerTile:
-                    renderPioTexture(deathTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
-                    break;
                 default:
                     break;
                 }
@@ -227,11 +234,9 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
         }
     }
 
-    renderGameBar(level, window, renderer);
-
 }
 
-void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer) {
+void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer, bool isPaused) {
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 30);
     
@@ -239,7 +244,7 @@ void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer) {
     gameBar.x = 0,
     gameBar.y = 0,
     gameBar.w = window.width,
-    gameBar.h = 50;
+    gameBar.h = 32;
 
     SDL_RenderFillRect(renderer, &gameBar);
 
@@ -251,6 +256,13 @@ void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer) {
     renderPioTextureCornered(mainText.texture, 0, 0, renderer);
     renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
     renderPioTextureCornered(mapTimer.texture, 500, 0, renderer);
+
+    if(isPaused) {
+        renderPioTextureCornered(pauseTexture, window.width - 32, 0, renderer);
+    } else {
+        renderPioTextureCornered(playTexture, window.width - 32, 0, renderer);
+    }
+    
 
 }
 
