@@ -145,7 +145,7 @@ int main(int argc, char *args[]) {
                         case SDLK_c:
                             fillLevel(&currLevel, "./assets/maps/cave_1.txt");
                             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
-                            updateGameBar(currLevel, gRenderer);
+                            //updateGameBar(currLevel, gRenderer, miner.lives);
                             break;
                         case SDLK_p:
                             if(pause == true) pause = false;
@@ -193,7 +193,7 @@ int main(int argc, char *args[]) {
                     }
                 }
                 
-                updateGameBar(currLevel, gRenderer);
+                updateGameBar(currLevel, gRenderer, miner.lives);
 
                 updateCameraPosition(&camera, miner.row, miner.col);
 

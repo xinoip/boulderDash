@@ -306,6 +306,7 @@ void generateDiaOnDeath(level_t *level, int row, int col, bool isMonster) {
 
 void killMiner(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer, char deathCause) {
     printf("YOU DIED\n");
+    miner->lives--;
     switch(deathCause) {
         case rockTile:
             level->map[miner->row][miner->col] = rockTile;

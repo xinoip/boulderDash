@@ -5,6 +5,7 @@ miner_t createMiner(int row, int col) {
     rtr.row = row;
     rtr.col = col;
     rtr.level = 1;
+    rtr.lives = 10;
     return rtr;
 }
 

@@ -12,11 +12,15 @@ pioTexture_t monsterTexture;
 pioTexture_t waterTexture;
 pioTexture_t pauseTexture;
 pioTexture_t playTexture;
+pioTexture_t livesTexture;
+pioTexture_t timeTexture;
+pioTexture_t diamondSymbolTexture;
 
 TTF_Font *gFont = NULL;
 pioTextFont_t mainText;
 pioTextFont_t diamondCount;
 pioTextFont_t mapTimer;
+pioTextFont_t minerLives;
 
 bool loadMedia(SDL_Renderer *renderer) {
 
@@ -47,6 +51,13 @@ bool loadMedia(SDL_Renderer *renderer) {
     resizePioTexture(&(mapTimer.texture), 32, 32);
     if(mapTimer.texture.texture == NULL) {
         printf("Failed to load mapTimer text image!\n");
+        success = false;
+        
+    }
+    minerLives = loadPioTextFont("init", textColor, gFont, renderer);
+    resizePioTexture(&(minerLives.texture), 32, 32);
+    if(minerLives.texture.texture == NULL) {
+        printf("Failed to load minerLives text image!\n");
         success = false;
         
     }
@@ -147,6 +158,30 @@ bool loadMedia(SDL_Renderer *renderer) {
 
     }
 
+    livesTexture = loadPioTexture("./assets/image/livesTexture.png", renderer);
+    resizePioTexture(&livesTexture, 32, 32);
+    if(livesTexture.texture == NULL) {
+        printf("Failed to load livesTexture image!\n");
+        success = false;
+
+    }
+
+    timeTexture = loadPioTexture("./assets/image/timeTexture.png", renderer);
+    resizePioTexture(&timeTexture, 32, 32);
+    if(timeTexture.texture == NULL) {
+        printf("Failed to load timeTexture image!\n");
+        success = false;
+
+    }
+
+    diamondSymbolTexture = loadPioTexture("./assets/image/diamondTexture.png", renderer);
+    resizePioTexture(&diamondSymbolTexture, 32, 32);
+    if(diamondSymbolTexture.texture == NULL) {
+        printf("Failed to load diamondSymbolTexture image!\n");
+        success = false;
+
+    }
+
     return success;
 
 }
@@ -163,6 +198,8 @@ void closeMedia() {
     destroyPioTexture(&monsterTexture);
     destroyPioTexture(&waterTexture);
     destroyPioTexture(&pauseTexture);
+    destroyPioTexture(&livesTexture);
+    destroyPioTexture(&timeTexture);
 }
 
 void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
@@ -254,8 +291,7 @@ void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer, bo
     //updatePioTextFont(&diamondCount, "0D", renderer);
     
     renderPioTextureCornered(mainText.texture, 0, 0, renderer);
-    renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
-    renderPioTextureCornered(mapTimer.texture, 500, 0, renderer);
+    //renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
 
     if(isPaused) {
         renderPioTextureCornered(pauseTexture, window.width - 32, 0, renderer);
@@ -263,12 +299,23 @@ void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer, bo
         renderPioTextureCornered(playTexture, window.width - 32, 0, renderer);
     }
     
+    renderPioTextureCornered(livesTexture, window.width - 64, 0, renderer);
+    renderPioTextureCornered(minerLives.texture, window.width - 128, 0, renderer);
+
+    renderPioTextureCornered(timeTexture, (window.width / 2) + 32, 0, renderer);
+    renderPioTextureCornered(mapTimer.texture, (window.width / 2) + 64, 0, renderer);
+
+    renderPioTextureCornered(diamondCount.texture, (window.width / 2) - 32, 0, renderer);
+    renderPioTextureCornered(diamondSymbolTexture, (window.width / 2) - 64, 0, renderer);
+
 
 }
 
-void updateGameBar(level_t level, SDL_Renderer *renderer) {
+void updateGameBar(level_t level, SDL_Renderer *renderer, int lives) {
     char diaText[5];
     char mapTimeText[12];
+    char minerLivesText[12];
+    sprintf(minerLivesText, "%d", lives);
     sprintf(mapTimeText, "%d", level.timeLimit);
     if(level.diamondCount <= 0) {
         updatePioTextFont(&diamondCount, "Door Open", renderer);    
@@ -277,9 +324,11 @@ void updateGameBar(level_t level, SDL_Renderer *renderer) {
         updatePioTextFont(&diamondCount, diaText, renderer);
     }
     updatePioTextFont(&mapTimer, mapTimeText, renderer);
+    updatePioTextFont(&minerLives, minerLivesText, renderer);
     //renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
 }
 
 void renderOnDeath(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
     renderMap(level, camera, window, renderer);
+    renderGameBar(level, window, renderer, true);
 }

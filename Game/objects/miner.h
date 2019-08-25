@@ -12,6 +12,7 @@ typedef struct Miner miner_t;
 typedef struct Miner {
     int row, col;
     int level;
+    int lives;
 } miner_t;
 
 typedef enum MoveDirection {
