@@ -116,6 +116,7 @@ int main(int argc, char *args[]) {
 
         } else {
             bool quit = false;
+            bool pause = false;
 
             SDL_Event e;
 
@@ -129,7 +130,9 @@ int main(int argc, char *args[]) {
                         quit = true;
 
                     } else if(e.type == SDL_KEYDOWN) {
-                        moveMiner(&miner, &currLevel, e);
+                        if(!pause) {
+                            moveMiner(&miner, &currLevel, e);
+                        }
                         switch (e.key.keysym.sym) {
                         case SDLK_a:
                             fillLevel(&currLevel, "./assets/maps/mapA.txt");
@@ -143,6 +146,10 @@ int main(int argc, char *args[]) {
                             fillLevel(&currLevel, "./assets/maps/cave_1.txt");
                             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
                             updateGameBar(currLevel, gRenderer);
+                            break;
+                        case SDLK_p:
+                            if(pause == true) pause = false;
+                            else if(pause == false) pause = true;
                             break;
                         default:
                             break;
@@ -162,27 +169,30 @@ int main(int argc, char *args[]) {
 
                 }
                 
-                currentTime = SDL_GetTicks();
-                if(currentTime > lastTime + 200) {
-                    updateMap(&currLevel, &miner, camera, gameWindow, gRenderer);
-                    lastTime = currentTime;    
+                // updates
+                if(!pause) {
+                    currentTime = SDL_GetTicks();
+                    if(currentTime > lastTime + 200) {
+                        updateMap(&currLevel, &miner, camera, gameWindow, gRenderer);
+                        lastTime = currentTime;    
 
+                    }
+
+                    levelTime = SDL_GetTicks();
+                    if(levelTime > levelLastTime + 1000) {
+                        currLevel.timeLimit--;
+                        levelLastTime = levelTime;
+                        
+                    }
+
+                    waterTime = SDL_GetTicks();
+                    if(waterTime > waterLastTime + currLevel.waterMs) {
+                        updateWater(&currLevel);
+                        waterLastTime = waterTime;
+
+                    }
                 }
-
-                levelTime = SDL_GetTicks();
-                if(levelTime > levelLastTime + 1000) {
-                    currLevel.timeLimit--;
-                    levelLastTime = levelTime;
-                    
-                }
-
-                waterTime = SDL_GetTicks();
-                if(waterTime > waterLastTime + currLevel.waterMs) {
-                    updateWater(&currLevel);
-                    waterLastTime = waterTime;
-
-                }
-
+                
                 updateGameBar(currLevel, gRenderer);
 
                 updateCameraPosition(&camera, miner.row, miner.col);
