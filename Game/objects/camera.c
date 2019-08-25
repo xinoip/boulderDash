@@ -22,7 +22,42 @@ bool isInsideCamera(pioWindow_t window, camera_t camera,int row, int col) {
     return (row >= upRow && row <= downRow && col >= leftCol && col <= rightCol);  
 }
 
-void updateCameraPosition(camera_t *camera, int newRow, int newCol) {
+void updateCameraPosition(camera_t *camera, int newRow, int newCol, int limitRow, int limitCol) {
+    
     camera->row = newRow;
     camera->col = newCol;
+    
+    //int upLimit = camera->row - (camera->rowOffSet);
+    // int downLimit = camera->row + (camera->rowOffSet);
+    // int leftLimit = camera->col - (camera->colOffSet);
+    // int rightLimit = camera->col + (camera->colOffSet);
+
+    int leftLimit = camera->col - (camera->rowOffSet/2);
+    int rightLimit = camera->col + (camera->rowOffSet/2);
+    int upLimit = camera->row - (camera->colOffSet/2);
+    int downLimit = camera->row + (camera->colOffSet/2);
+
+    //printf("up %d, down %d, left %d, right %d\n", upLimit, downLimit, leftLimit, rightLimit);
+    //printf("%d rowoff, %d coloff\n", camera->rowOffSet, camera->colOffSet);
+
+    while(leftLimit < 0) {
+        camera->col++;
+        leftLimit = camera->col - (camera->rowOffSet/2);
+    }
+
+    while(rightLimit > limitCol) {
+        camera->col--;
+        rightLimit = camera->col + (camera->rowOffSet/2);
+    }
+
+    while(upLimit < 0) {
+        camera->row++;
+        upLimit = camera->row - (camera->colOffSet/2);
+    }
+
+    while(downLimit > limitRow) {
+        camera->row--;
+        downLimit = camera->row + (camera->colOffSet/2);
+    }
+
 }

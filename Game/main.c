@@ -195,7 +195,7 @@ int main(int argc, char *args[]) {
                 
                 updateGameBar(currLevel, gRenderer, miner.lives);
 
-                updateCameraPosition(&camera, miner.row, miner.col);
+                updateCameraPosition(&camera, miner.row, miner.col, currLevel.row, currLevel.col);
 
                 renderMap(currLevel, camera, gameWindow, gRenderer);
 

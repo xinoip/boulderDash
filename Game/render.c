@@ -204,17 +204,18 @@ void closeMedia() {
 
 void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
     SDL_RenderClear(renderer);
-    
     //i specifies the Y coordinate of render pixel
     for(int i = 0; i < level.row; i++) {
         //j specifies the X coordinate of render pixel
         for(int j = 0; j < level.col; j++) {
             tile_t currentTile = createTile(i, j);
             tile_t cam = createTile(camera.row, camera.col);
-            //int topBarMenu = 30;
-            int diffX = (window.width / 2) - cam.center_x; 
-            int diffY = (window.height / 2) - cam.center_y ;//+ topBarMenu;
-            
+            int topBarMenu = 32;
+            // int diffX = (window.width / 2) - cam.center_x; 
+            // int diffY = (window.height / 2) - cam.center_y + topBarMenu;
+            int diffX = (window.width/2) - cam.center_x;
+            int diffY = (window.height/2) - cam.center_y;
+
             if(isInsideCamera(window, camera, i, j)) {
                 switch (level.map[i][j]) {
                 case borderTile:
