@@ -10,9 +10,103 @@ bool isValidCellToMove(level_t level, int row, int col) {
 }
 
 void updateMap(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
-    updateFallingObjects(level, miner, camera, window, renderer);
+    //updateFallingObjects(level, miner, camera, window, renderer);
+    updateFalling2(level, miner, camera, window, renderer);
     updateSpiders(level, miner, camera, window, renderer);
     updateMonsters(level, miner, camera, window, renderer);
+}
+
+void updateFalling2(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
+
+    int dontProcess[level->row][level->col];
+    for(int row = 0; row<level->row; row++) {
+        for(int col = 0; col<level->col; col++) {
+            dontProcess[row][col] = 0;
+        }
+    }
+
+    for(int row = 0; row < level->row; row++) {
+        for(int col = 0; col < level->col; col++) {
+            if(dontProcess[row][col] != 1) {
+                switch(level->map[row][col]) {
+                    case rockTile:
+                        switch(level->map[row+1][col]) {
+                            case emptyTile:
+                                level->map[row][col] = fallingRockTile;
+                            break;
+                            case rockTile: // Crush onto another rock
+                                if(level->map[row][col-1] == emptyTile && level->map[row+1][col-1] == emptyTile) {
+                                    level->map[row][col] = emptyTile;
+                                    level->map[row][col-1] = fallingRockTile;
+                                    dontProcess[row][col-1] = 1;
+
+                                } else if(level->map[row][col+1] == emptyTile && level->map[row+1][col+1] == emptyTile) {
+                                    level->map[row][col] = emptyTile;
+                                    level->map[row][col+1] = fallingRockTile;
+                                    dontProcess[row][col+1] = 1;
+
+                                }
+                            break;
+                        }
+                    break;
+                    case fallingRockTile:
+                        switch(level->map[row+1][col]) {
+                            case emptyTile:
+                                level->map[row][col] = emptyTile;
+                                level->map[row+1][col] = fallingRockTile;
+                                dontProcess[row+1][col] = 1;
+                            break;
+                            case playerTile:
+                                level->map[row][col] = emptyTile;
+                                level->map[row+1][col] = fallingRockTile;
+                                dontProcess[row+1][col] = 1;
+                                killMiner(level, miner, camera, window, renderer, rockTile);
+                            break;
+                            case spiderTile:
+                                level->map[row][col] = emptyTile;
+                                level->map[row+1][col] = fallingRockTile;
+                                dontProcess[row+1][col] = 1;
+                                generateDiaOnDeath(level, row+1, col, false);
+                            break;
+                            case monsterTile:
+                                level->map[row][col] = emptyTile;
+                                level->map[row+1][col] = fallingRockTile;
+                                dontProcess[row+1][col] = 1;
+                                generateDiaOnDeath(level, row+1, col, true);
+                            break;
+                            default:
+                                playBoulderFall();
+                                level->map[row][col] = rockTile;
+                            break;
+                        }
+                    break;
+                    case diamondTile:
+                        if(level->map[row+1][col] == emptyTile) {
+                            level->map[row][col] = fallingDiamondTile;
+                        }
+                    break;
+                    case fallingDiamondTile:
+                        switch(level->map[row+1][col]) {
+                            case emptyTile:
+                                level->map[row][col] = emptyTile;
+                                level->map[row+1][col] = fallingDiamondTile;
+                                dontProcess[row+1][col] = 1;
+                            break;
+                            case playerTile:
+                                level->map[row][col] = emptyTile;
+                                playDiamondCollect();
+                                level->diamondCount--;
+                            break;
+                            default:
+                                level->map[row][col] = diamondTile;
+                            break;
+                        }
+                    break;
+                }
+            }
+
+        }
+    }
 }
 
 void updateFallingObjects(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
@@ -52,6 +146,12 @@ void updateFallingObjects(level_t *level, miner_t *miner, camera_t camera, pioWi
 
                 } 
 
+            } else if(level->map[row][col] == fallingRockTile) {
+                if(level->map[row+1][col] == playerTile) {
+                    level->map[row][col] = emptyTile;
+                    level->map[row+1][col] = fallingRockTile;
+                    killMiner(level, miner, camera, window, renderer, rockTile);
+                }
             }
 
         }
@@ -63,9 +163,10 @@ void updateFallingObjects(level_t *level, miner_t *miner, camera_t camera, pioWi
         for(int col = 0; col < level->col; col++) {
             if(level->map[row][col] == fallingRockTile) { // Falling rocks
                 if(level->map[row+1][col] == playerTile) { // Crashin player
-                    level->map[row][col] = emptyTile;
-                    killMiner(level, miner, camera, window, renderer, rockTile);
-                    level->map[row+1][col] = rockTile;
+                    //level->map[row][col] = emptyTile;
+                    //killMiner(level, miner, camera, window, renderer, rockTile);
+                    //level->map[row+1][col] = rockTile;
+                    //dont convert
 
                 } else { // Just convert to stationary
                     level->map[row][col] = rockTile;
@@ -73,7 +174,7 @@ void updateFallingObjects(level_t *level, miner_t *miner, camera_t camera, pioWi
                 }
                 
                 // Play boulderFallSOund
-                if(level->map[row+1][col] != emptyTile) {
+                if(level->map[row+1][col] != emptyTile && level->map[row+1][col] != playerTile) {
                     playBoulderFall();
                 }
 
