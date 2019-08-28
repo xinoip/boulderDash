@@ -23,9 +23,42 @@ pioTextFont_t mapTimer;
 pioTextFont_t minerLives;
 pioTextFont_t levelName;
 
+Mix_Music *gMusic = NULL;
+Mix_Chunk *boulderFall = NULL;
+Mix_Chunk *diamondCollect = NULL;
+Mix_Chunk *dirtRemove = NULL;
+
 bool loadMedia(SDL_Renderer *renderer) {
 
     bool success = true;
+
+    //Load music
+    gMusic = Mix_LoadMUS("./assets/sounds/music.ogg");
+    if(gMusic == NULL) {
+        printf( "Failed to load sound gMusic! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+
+    //Load sounds
+    boulderFall = Mix_LoadWAV("./assets/sounds/boulderFall.ogg");
+    if(boulderFall == NULL) {
+        printf( "Failed to load sound boulderFall! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+
+    //Load sounds
+    diamondCollect = Mix_LoadWAV("./assets/sounds/diamondCollect.ogg");
+    if(diamondCollect == NULL) {
+        printf( "Failed to load sound diamondCollect! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+
+    //Load sounds
+    dirtRemove = Mix_LoadWAV("./assets/sounds/dirtRemove.ogg");
+    if(dirtRemove == NULL) {
+        printf( "Failed to load sound dirtRemove! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
 
     gFont = TTF_OpenFont("./assets/font/zig.ttf", 28);
     if(gFont == NULL) {
@@ -187,6 +220,22 @@ bool loadMedia(SDL_Renderer *renderer) {
 
 }
 
+void startMusic() {
+    Mix_PlayMusic(gMusic, 0);
+}
+
+void playBoulderFall() {
+    Mix_PlayChannel(-1, boulderFall, 0);
+}
+
+void playDiamondCollect() {
+    Mix_PlayChannel(-1, diamondCollect, 0);
+}
+
+void playDirtRemove() {
+    Mix_PlayChannel(-1, dirtRemove, 0);
+}
+
 void closeMedia() {
     destroyPioTexture(&dirtTexture);
     destroyPioTexture(&borderTexture);
@@ -287,7 +336,7 @@ void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer, bo
 
     SDL_RenderFillRect(renderer, &gameBar);
 
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 
     //updatePioTextFont(&mainText, "Main", renderer);
     //updatePioTextFont(&diamondCount, "0D", renderer);

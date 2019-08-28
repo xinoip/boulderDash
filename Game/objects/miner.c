@@ -67,12 +67,14 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
             miner->col = newCol;
             break;
         case dirtTile:
+            playDirtRemove();
             level->map[newRow][newCol] = playerTile;   //move miner to new cell
             level->map[miner->row][miner->col] = emptyTile;    //clear old cell
             miner->row = newRow;
             miner->col = newCol;
             break;
         case diamondTile:
+            playDiamondCollect();
             level->map[newRow][newCol] = playerTile;   //move miner to new cell
             level->map[miner->row][miner->col] = emptyTile;    //clear old cell
             miner->row = newRow;

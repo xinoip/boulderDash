@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include "./base.h"
 #include "./wrappers/pio-texture.h"
 #include "./wrappers/pio-window.h"
@@ -22,5 +23,10 @@ void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer, bo
 void updateGameBar(level_t level, SDL_Renderer *renderer, int lives);
 
 void renderOnDeath(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer *renderer);
+
+void startMusic();
+void playBoulderFall();
+void playDiamondCollect();
+void playDirtRemove();
 
 #endif

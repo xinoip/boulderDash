@@ -8,6 +8,7 @@ typedef struct Miner miner_t;
 #include "../base.h"
 #include "./level.h"
 #include "./controls.h"
+#include "../render.h"
 
 typedef struct Miner {
     int row, col;

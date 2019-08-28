@@ -72,6 +72,10 @@ void updateFallingObjects(level_t *level, miner_t *miner, camera_t camera, pioWi
 
                 }
                 
+                // Play boulderFallSOund
+                if(level->map[row+1][col] != emptyTile) {
+                    playBoulderFall();
+                }
 
             }
 
