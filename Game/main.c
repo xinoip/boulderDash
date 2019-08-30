@@ -180,7 +180,11 @@ int main(int argc, char *args[]) {
                                 case 5:
                                     fillLevel(&currLevel, "./assets/maps/cave_5.txt");
                                     updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
-                                    break;             
+                                    break;
+                                case 6:
+                                    fillLevel(&currLevel, "./assets/maps/cave_6.txt");
+                                    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+                                    break;              
                                 default:
                                     break;
                                 }
