@@ -61,6 +61,9 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
 
     switch(level->map[newRow][newCol]) {
         case emptyTile:
+            if(level->diamondCount <= 0) {
+                passLevel(level);
+            }
             level->map[newRow][newCol] = playerTile;   //move miner to new cell
             level->map[miner->row][miner->col] = emptyTile;    //clear old cell
             miner->row = newRow;
@@ -68,6 +71,9 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
             break;
         case dirtTile:
             playDirtRemove();
+            if(level->diamondCount <= 0) {
+                passLevel(level);
+            } 
             level->map[newRow][newCol] = playerTile;   //move miner to new cell
             level->map[miner->row][miner->col] = emptyTile;    //clear old cell
             miner->row = newRow;
@@ -119,6 +125,9 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
             case 3:
                 fillLevel(level, "./assets/maps/cave_3.txt");
                 break;
+            case 4:
+                fillLevel(level, "./assets/maps/cave_4.txt");
+                break;            
             default:
                 break;
             }
