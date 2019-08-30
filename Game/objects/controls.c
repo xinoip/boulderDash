@@ -104,9 +104,9 @@ void updateFalling2(level_t *level, miner_t *miner, camera_t camera, pioWindow_t
                     break;
                 }
             }
-
         }
     }
+
 }
 
 void updateFallingObjects(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
@@ -191,75 +191,52 @@ void updateFallingObjects(level_t *level, miner_t *miner, camera_t camera, pioWi
 }
 
 void updateSpiders(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
+    int dontProcess[level->row][level->col];
+    for(int row = 0; row<level->row; row++) {
+        for(int col = 0; col<level->col; col++) {
+            dontProcess[row][col] = 0;
+        }
+    }
 
     for(int row = 0; row < level->row; row++) {
-        for(int col = 0; col < level->col; col++) {
+        for(int col = 0; col < level->col; col++) { 
 
-            if(level->map[row][col] == spiderTile) {
+            if(dontProcess[row][col] != 1 && level->map[row][col] == spiderTile) {
 
-                if(level->map[row][col+1] == playerTile) { // Kill player right
+                if(level->map[row][col+1] == playerTile || level->map[row+1][col] == playerTile || level->map[row][col-1] == playerTile || level->map[row-1][col] == playerTile) {
                     level->map[row][col] = emptyTile;
+                    level->map[miner->row][miner->col] = spiderTile;
+                    dontProcess[miner->row][miner->col] = 1;
                     killMiner(level, miner, camera, window, renderer, spiderTile);
-                    level->map[row][col+1] = movingSpiderTile;
-
-                } else if(level->map[row+1][col] == playerTile) { // Kill player bottom
-                    level->map[row][col] = emptyTile;
-                    killMiner(level, miner, camera, window, renderer, spiderTile); 
-                    level->map[row+1][col] = movingSpiderTile;
-
-                } else if(level->map[row][col-1] == playerTile) { // Kill player left
-                    level->map[row][col] = emptyTile;
-                    killMiner(level, miner, camera, window, renderer, spiderTile);
-                    level->map[row][col-1] = movingSpiderTile;
-
-                } else if(level->map[row-1][col] == playerTile) { // Kill player up
-                    killMiner(level, miner, camera, window, renderer, spiderTile);
-                    level->map[row][col] = emptyTile;
-                    level->map[row-1][col] = movingSpiderTile;
 
                 } else {
-                    // No player in range
-
                     if(level->map[row][col+1] == emptyTile) { // Right
                         level->map[row][col] = emptyTile;
-                        level->map[row][col+1] = movingSpiderTile;
+                        level->map[row][col+1] = spiderTile;
+                        dontProcess[row][col+1] = 1;
 
                     } else if(level->map[row+1][col] == emptyTile) { // Bottom
                         level->map[row][col] = emptyTile;
-                        level->map[row+1][col] = movingSpiderTile;
-
+                        level->map[row+1][col] = spiderTile;
+                        dontProcess[row+1][col] = 1;
 
                     } else if(level->map[row][col-1] == emptyTile) { // Left
                         level->map[row][col] = emptyTile;
-                        level->map[row][col-1] = movingSpiderTile;
+                        level->map[row][col-1] = spiderTile;
+                        dontProcess[row][col-1] = 1;
 
                     } else if(level->map[row-1][col] == emptyTile) { // Up
                         level->map[row][col] = emptyTile;
-                        level->map[row-1][col] = movingSpiderTile;
+                        level->map[row-1][col] = spiderTile;
+                        dontProcess[row-1][col] = 1;
 
-                    } else {
-                        // Spider stuck
-
-                    }
+                    } 
 
                 }
-                
-            }
-
-        }
-
-    }
-
-    // Convert moving spiders to stationary spiders
-    for(int row = 0; row < level->row; row++) {
-        for(int col = 0; col < level->col; col++) {
-            if(level->map[row][col] == movingSpiderTile) { // Moving spiders
-                level->map[row][col] = spiderTile;
 
             }
 
         }
-
     }
 
 }
