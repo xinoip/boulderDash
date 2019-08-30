@@ -113,6 +113,37 @@ void closeAll() {
 
 }
 
+void resetLevel(int levelNo) {
+    switch (levelNo) {
+        case 1:
+            fillLevel(&currLevel, "./assets/maps/cave_1.txt");
+            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);    
+            break;
+        case 2:
+            fillLevel(&currLevel, "./assets/maps/cave_2.txt");
+            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);    
+            break;
+        case 3:
+            fillLevel(&currLevel, "./assets/maps/cave_3.txt");
+            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+            break;
+        case 4:
+            fillLevel(&currLevel, "./assets/maps/cave_4.txt");
+            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+            break;
+        case 5:
+            fillLevel(&currLevel, "./assets/maps/cave_5.txt");
+            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+            break;
+        case 6:
+            fillLevel(&currLevel, "./assets/maps/cave_6.txt");
+            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+            break;              
+        default:
+            break;
+    }
+}
+
 int main(int argc, char *args[]) {
 
     Uint32 lastTime = 0, currentTime;
@@ -160,34 +191,7 @@ int main(int argc, char *args[]) {
                             //updateGameBar(currLevel, gRenderer, miner.lives);
                             break;
                         case SDLK_r:
-                            switch (miner.level) {
-                                case 1:
-                                    fillLevel(&currLevel, "./assets/maps/cave_1.txt");
-                                    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);    
-                                    break;
-                                case 2:
-                                    fillLevel(&currLevel, "./assets/maps/cave_2.txt");
-                                    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);    
-                                    break;
-                                case 3:
-                                    fillLevel(&currLevel, "./assets/maps/cave_3.txt");
-                                    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
-                                    break;
-                                case 4:
-                                    fillLevel(&currLevel, "./assets/maps/cave_4.txt");
-                                    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
-                                    break;
-                                case 5:
-                                    fillLevel(&currLevel, "./assets/maps/cave_5.txt");
-                                    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
-                                    break;
-                                case 6:
-                                    fillLevel(&currLevel, "./assets/maps/cave_6.txt");
-                                    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
-                                    break;              
-                                default:
-                                    break;
-                                }
+                            resetLevel(miner.level);
                             break;
                         case SDLK_p:
                             if(pause == true) pause = false;
@@ -224,7 +228,17 @@ int main(int argc, char *args[]) {
                     if(levelTime > levelLastTime + 1000) {
                         currLevel.timeLimit--;
                         levelLastTime = levelTime;
-                        
+                        if(currLevel.timeLimit <= 0) {
+                            currLevel.timeLimit = 0;
+                            updateGameBar(currLevel, gRenderer, miner.lives);
+                            renderGameBar(currLevel, gameWindow, gRenderer, pause);
+                            SDL_RenderPresent(gRenderer);
+                            SDL_Delay(3000);
+                            miner.lives--;
+                            resetLevel(miner.level);
+
+                        }
+
                     }
 
                     waterTime = SDL_GetTicks();

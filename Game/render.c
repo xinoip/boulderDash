@@ -378,7 +378,12 @@ void updateGameBar(level_t level, SDL_Renderer *renderer, int lives) {
     char mapTimeText[12];
     char minerLivesText[12];
     sprintf(minerLivesText, "%d", lives);
-    sprintf(mapTimeText, "%d", level.timeLimit);
+    //sprintf(mapTimeText, "%d", level.timeLimit);
+    if(level.timeLimit == 0) {
+        strcpy(mapTimeText, "Times up");
+    } else {
+        sprintf(mapTimeText, "%d", level.timeLimit);
+    }
     if(level.diamondCount <= 0) {
         //updatePioTextFont(&diamondCount, "Door Open", renderer);    
         sprintf(diaText, "%d", 0);
