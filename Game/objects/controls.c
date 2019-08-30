@@ -13,6 +13,7 @@ void updateMap(level_t *level, miner_t *miner, camera_t camera, pioWindow_t wind
     //updateFallingObjects(level, miner, camera, window, renderer);
     updateFalling2(level, miner, camera, window, renderer);
     updateSpiders(level, miner, camera, window, renderer);
+    //updateMonsters2(level, miner, camera, window, renderer);
     updateMonsters(level, miner, camera, window, renderer);
 }
 
@@ -387,7 +388,7 @@ void generateDiaOnDeath(level_t *level, int row, int col, bool isMonster) {
 }
 
 void killMiner(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer, char deathCause) {
-    printf("YOU DIED\n");
+    //printf("YOU DIED\n");
     miner->lives--;
     switch(deathCause) {
         case rockTile:

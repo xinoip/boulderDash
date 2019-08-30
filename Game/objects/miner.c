@@ -79,12 +79,12 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
             level->map[miner->row][miner->col] = emptyTile;    //clear old cell
             miner->row = newRow;
             miner->col = newCol;
-
+            
             level->diamondCount--;
 
             if(level->diamondCount <= 0) {
                 passLevel(level);
-            }
+            } 
             break;
         case rockTile:
             switch (dir) {
@@ -110,7 +110,7 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
                     break;
                 }
             break;
-        case doorTile:   // DOOR LEVEL CHANGE
+        case openDoorTile:   // DOOR LEVEL CHANGE
             miner->level++;
             switch (miner->level) {
             case 2:
@@ -131,19 +131,17 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
 }
 
 void passLevel(level_t *level) {
-    
-    int randomRow, randomCol;
 
-    do {
-        randomRow = rand() % level->row;
-        randomCol = rand() % level->col;
-        if(randomRow < level->row && randomCol < level->col) {
-            if(level->map[randomRow][randomCol] == emptyTile) {
-                break;
+    for(int row = 0; row < level->row; row++) {
+        for(int col = 0; col < level->col; col++) {
+
+            if(level->map[row][col] == closedDoorTile) {
+                level->map[row][col] = openDoorTile;
+                return;
+
             }
-        }
-    } while(1);
 
-    level->map[randomRow][randomCol] = doorTile;
+        }
+    }
 
 }

@@ -7,6 +7,7 @@ pioTexture_t borderTexture;
 pioTexture_t rockTexture;
 pioTexture_t diamondTexture;
 pioTexture_t doorTexture;
+pioTexture_t closedDoorTexture;
 pioTexture_t spiderTexture;
 pioTexture_t monsterTexture;
 pioTexture_t waterTexture;
@@ -148,6 +149,14 @@ bool loadMedia(SDL_Renderer *renderer) {
     resizePioTexture(&doorTexture, TILE_WIDTH, TILE_HEIGHT);
     if(doorTexture.texture == NULL) {
         printf("Failed to load doorTexture image!\n");
+        success = false;
+
+    }
+
+    closedDoorTexture = loadPioTexture("./assets/image/closedDoorTexture.png", renderer);
+    resizePioTexture(&closedDoorTexture, TILE_WIDTH, TILE_HEIGHT);
+    if(closedDoorTexture.texture == NULL) {
+        printf("Failed to load closedDoorTexture image!\n");
         success = false;
 
     }
@@ -295,7 +304,10 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
                     renderPioTexture(diamondTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
                 //case 'Z':
-                case doorTile:
+                case closedDoorTile:
+                    renderPioTexture(closedDoorTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
+                    break;
+                case openDoorTile:
                     renderPioTexture(doorTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
                 case spiderTile:
@@ -368,7 +380,9 @@ void updateGameBar(level_t level, SDL_Renderer *renderer, int lives) {
     sprintf(minerLivesText, "%d", lives);
     sprintf(mapTimeText, "%d", level.timeLimit);
     if(level.diamondCount <= 0) {
-        updatePioTextFont(&diamondCount, "Door Open", renderer);    
+        //updatePioTextFont(&diamondCount, "Door Open", renderer);    
+        sprintf(diaText, "%d", 0);
+        updatePioTextFont(&diamondCount, diaText, renderer);
     } else {
         sprintf(diaText, "%d", level.diamondCount);
         updatePioTextFont(&diamondCount, diaText, renderer);

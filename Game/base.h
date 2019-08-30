@@ -9,7 +9,7 @@ typedef enum {false, true} bool;
 #define borderTile 'W'
 #define diamondTile '*'
 #define dirtTile 'D'
-#define doorTile 'Z'
+#define openDoorTile 'z'
 #define emptyTile 'E'
 #define monsterTile 'M'
 #define playerTile 'P'
@@ -21,5 +21,6 @@ typedef enum {false, true} bool;
 #define movingSpiderTile 's'
 #define waterTile 'G'
 #define movingWaterTile 'g'
+#define closedDoorTile 'Z'
 
 #endif
