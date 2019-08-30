@@ -79,6 +79,7 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
             miner->row = newRow;
             miner->col = newCol;
             break;
+        case fallingDiamondTile:
         case diamondTile:
             playDiamondCollect();
             level->map[newRow][newCol] = playerTile;   //move miner to new cell
@@ -92,6 +93,7 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
                 passLevel(level);
             } 
             break;
+        case fallingRockTile:
         case rockTile:
             switch (dir) {
                 case leftDir:
@@ -127,7 +129,10 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
                 break;
             case 4:
                 fillLevel(level, "./assets/maps/cave_4.txt");
-                break;            
+                break;
+            case 5:
+                fillLevel(level, "./assets/maps/cave_5.txt");
+                break;             
             default:
                 break;
             }

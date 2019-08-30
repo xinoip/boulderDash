@@ -69,6 +69,7 @@ void updateFalling2(level_t *level, miner_t *miner, camera_t camera, pioWindow_t
                                 dontProcess[row+1][col] = 1;
                                 generateDiaOnDeath(level, row+1, col, false);
                             break;
+                            case movingMonsterTile:
                             case monsterTile:
                                 level->map[row][col] = emptyTile;
                                 level->map[row+1][col] = fallingRockTile;
@@ -247,12 +248,19 @@ void updateMonsters(level_t *level, miner_t *miner, camera_t camera, pioWindow_t
     int targetRow = miner->row;
     int targetCol = miner->col;
 
+    int dontProcess[level->row][level->col];
+    for(int row = 0; row<level->row; row++) {
+        for(int col = 0; col<level->col; col++) {
+            dontProcess[row][col] = 0;
+        }
+    }
+
     for(int row = 0; row < level->row; row++) {
         for(int col = 0; col < level->col; col++) {
 
-            if(level->map[row][col] == monsterTile) {
+            if(dontProcess[row][col] != 1 && (level->map[row][col] == monsterTile || level->map[row][col] == movingMonsterTile)) {
                 // kill miner if possible
-                if(level->map[row][col+1] == playerTile || level->map[row][col-1] == playerTile || level->map[row+1][col] == playerTile || level->map[row-1][col] == playerTile) {
+                if(level->map[row][col] == movingMonsterTile && level->map[row][col+1] == playerTile || level->map[row][col-1] == playerTile || level->map[row+1][col] == playerTile || level->map[row-1][col] == playerTile) {
                     level->map[row][col] = emptyTile;
                     level->map[miner->row][miner->col] = monsterTile;
                     killMiner(level, miner, camera, window, renderer, monsterTile);
@@ -260,14 +268,16 @@ void updateMonsters(level_t *level, miner_t *miner, camera_t camera, pioWindow_t
                 } else if(targetRow > row) { // miner on bottom
                     if(level->map[row+1][col] == emptyTile) {
                         level->map[row][col] = emptyTile;
-                        level->map[row+1][col] = monsterTile;
+                        level->map[row+1][col] = movingMonsterTile;
+                        dontProcess[row+1][col] = 1;
 
                     }
 
                 } else if(targetRow < row) { // miner on top
                     if(level->map[row-1][col] == emptyTile) {
                         level->map[row][col] = emptyTile;
-                        level->map[row-1][col] = monsterTile;
+                        level->map[row-1][col] = movingMonsterTile;
+                        dontProcess[row-1][col] = 1;
 
                     }    
 
@@ -275,14 +285,16 @@ void updateMonsters(level_t *level, miner_t *miner, camera_t camera, pioWindow_t
                     if(targetCol > col) { // miner on right
                         if(level->map[row][col+1] == emptyTile) {
                             level->map[row][col] = emptyTile;
-                            level->map[row][col+1] = monsterTile;
+                            level->map[row][col+1] = movingMonsterTile;
+                            dontProcess[row][col+1] = 1;
 
                         }
 
                     } else if(targetCol < col) { // miner on left
                         if(level->map[row][col-1] == emptyTile) {
                             level->map[row][col] = emptyTile;
-                            level->map[row][col-1] = monsterTile;
+                            level->map[row][col-1] = movingMonsterTile;
+                            dontProcess[row][col-1] = 1;
                             
                         }
 
@@ -291,6 +303,8 @@ void updateMonsters(level_t *level, miner_t *miner, camera_t camera, pioWindow_t
 
                     }
 
+                } else {
+                    level->map[row][col] = monsterTile;
                 }
 
             }

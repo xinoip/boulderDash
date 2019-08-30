@@ -159,6 +159,32 @@ int main(int argc, char *args[]) {
                             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
                             //updateGameBar(currLevel, gRenderer, miner.lives);
                             break;
+                        case SDLK_r:
+                            switch (miner.level) {
+                                case 1:
+                                    fillLevel(&currLevel, "./assets/maps/cave_1.txt");
+                                    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);    
+                                    break;
+                                case 2:
+                                    fillLevel(&currLevel, "./assets/maps/cave_2.txt");
+                                    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);    
+                                    break;
+                                case 3:
+                                    fillLevel(&currLevel, "./assets/maps/cave_3.txt");
+                                    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+                                    break;
+                                case 4:
+                                    fillLevel(&currLevel, "./assets/maps/cave_4.txt");
+                                    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+                                    break;
+                                case 5:
+                                    fillLevel(&currLevel, "./assets/maps/cave_5.txt");
+                                    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+                                    break;             
+                                default:
+                                    break;
+                                }
+                            break;
                         case SDLK_p:
                             if(pause == true) pause = false;
                             else if(pause == false) pause = true;
