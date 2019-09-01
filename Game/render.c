@@ -310,6 +310,10 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
                 case openDoorTile:
                     renderPioTexture(doorTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
+                case spiderR:
+                case spiderB:
+                case spiderL:
+                case spiderT:
                 case spiderTile:
                     renderPioTexture(spiderTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;

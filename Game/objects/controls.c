@@ -63,6 +63,10 @@ void updateFalling2(level_t *level, miner_t *miner, camera_t camera, pioWindow_t
                                 dontProcess[row+1][col] = 1;
                                 killMiner(level, miner, camera, window, renderer, rockTile);
                             break;
+                            case spiderR:
+                            case spiderB:
+                            case spiderL:
+                            case spiderT:
                             case spiderTile:
                                 level->map[row][col] = emptyTile;
                                 level->map[row+1][col] = fallingRockTile;
@@ -203,7 +207,7 @@ void updateSpiders(level_t *level, miner_t *miner, camera_t camera, pioWindow_t 
     for(int row = 0; row < level->row; row++) {
         for(int col = 0; col < level->col; col++) { 
 
-            if(dontProcess[row][col] != 1 && level->map[row][col] == spiderTile) {
+            if(dontProcess[row][col] != 1 && (level->map[row][col] == spiderTile || level->map[row][col] == spiderR || level->map[row][col] == spiderB || level->map[row][col] == spiderL || level->map[row][col] == spiderT)) {
 
                 if(level->map[row][col+1] == playerTile || level->map[row+1][col] == playerTile || level->map[row][col-1] == playerTile || level->map[row-1][col] == playerTile) {
                     level->map[row][col] = emptyTile;
@@ -212,28 +216,68 @@ void updateSpiders(level_t *level, miner_t *miner, camera_t camera, pioWindow_t 
                     killMiner(level, miner, camera, window, renderer, spiderTile);
 
                 } else {
-                    if(level->map[row][col+1] == emptyTile) { // Right
-                        level->map[row][col] = emptyTile;
-                        level->map[row][col+1] = spiderTile;
-                        dontProcess[row][col+1] = 1;
+                    if(level->map[row][col] == spiderTile) {
+                        if(level->map[row][col+1] == emptyTile) { // Right
+                            level->map[row][col] = spiderR;
+                            dontProcess[row][col] = 1;
 
-                    } else if(level->map[row+1][col] == emptyTile) { // Bottom
-                        level->map[row][col] = emptyTile;
-                        level->map[row+1][col] = spiderTile;
-                        dontProcess[row+1][col] = 1;
+                        } else if(level->map[row+1][col] == emptyTile) { // Bottom
+                            level->map[row][col] = spiderR;
+                            dontProcess[row][col] = 1;
 
-                    } else if(level->map[row][col-1] == emptyTile) { // Left
-                        level->map[row][col] = emptyTile;
-                        level->map[row][col-1] = spiderTile;
-                        dontProcess[row][col-1] = 1;
+                        } else if(level->map[row][col-1] == emptyTile) { // Left
+                            level->map[row][col] = spiderR;
+                            dontProcess[row][col] = 1;
 
-                    } else if(level->map[row-1][col] == emptyTile) { // Up
-                        level->map[row][col] = emptyTile;
-                        level->map[row-1][col] = spiderTile;
-                        dontProcess[row-1][col] = 1;
+                        } else if(level->map[row-1][col] == emptyTile) { // Top
+                            level->map[row][col] = spiderR;
+                            dontProcess[row][col] = 1;
 
-                    } 
+                        }    
+                    } else {
+                        switch(level->map[row][col]) {
+                            case spiderR:
+                                if(level->map[row][col+1] == emptyTile) { // Right
+                                    level->map[row][col] = emptyTile;
+                                    level->map[row][col+1] = spiderR;
+                                    dontProcess[row][col+1] = 1;
 
+                                } else {
+                                    level->map[row][col] = spiderB;
+                                }       
+                            break;
+                            case spiderB:
+                                if(level->map[row+1][col] == emptyTile) { // bottom
+                                    level->map[row][col] = emptyTile;
+                                    level->map[row+1][col] = spiderB;
+                                    dontProcess[row+1][col] = 1;
+
+                                } else {
+                                    level->map[row][col] = spiderL;
+                                }
+                            break;
+                            case spiderL:
+                                if(level->map[row][col-1] == emptyTile) { // left
+                                    level->map[row][col] = emptyTile;
+                                    level->map[row][col-1] = spiderL;
+                                    dontProcess[row][col-1] = 1;
+
+                                } else {
+                                    level->map[row][col] = spiderT;
+                                }
+                            break;
+                            case spiderT:
+                                if(level->map[row-1][col] == emptyTile) { // top
+                                    level->map[row][col] = emptyTile;
+                                    level->map[row-1][col] = spiderT;
+                                    dontProcess[row-1][col] = 1;
+
+                                } else {
+                                    level->map[row][col] = spiderR;
+                                }
+                            break;
+                        }
+                    }
                 }
 
             }

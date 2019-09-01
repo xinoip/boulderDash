@@ -23,4 +23,9 @@ typedef enum {false, true} bool;
 #define movingWaterTile 'g'
 #define closedDoorTile 'Z'
 
+#define spiderR '6'
+#define spiderL '4'
+#define spiderB '2'
+#define spiderT '8'
+
 #endif

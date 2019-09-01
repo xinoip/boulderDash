@@ -178,8 +178,8 @@ int main(int argc, char *args[]) {
 
             SDL_Event e;
 
-            fillLevel(&currLevel, "./assets/maps/cave_8.txt");
-            miner.level = 8;
+            fillLevel(&currLevel, "./assets/maps/cave_2.txt");
+            miner.level = 2;
             //fillLevel(&currLevel, "./assets/maps/albu.txt");
             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
             startMusic();
