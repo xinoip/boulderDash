@@ -135,7 +135,19 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
                 break;
             case 6:
                 fillLevel(level, "./assets/maps/cave_6.txt");
-                break;              
+                break;
+            case 7:
+                fillLevel(level, "./assets/maps/cave_7.txt");
+                break;
+            case 8:
+                fillLevel(level, "./assets/maps/cave_8.txt");
+                break;
+            case 9:
+                fillLevel(level, "./assets/maps/cave_9.txt");
+                break;
+            case 10:
+                fillLevel(level, "./assets/maps/cave_10.txt");
+                break;                
             default:
                 break;
             }

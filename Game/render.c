@@ -177,7 +177,7 @@ bool loadMedia(SDL_Renderer *renderer) {
 
     }
 
-    waterTexture = loadPioTexture("./assets/image/waterTexture.jpg", renderer);
+    waterTexture = loadPioTexture("./assets/image/waterTexture.png", renderer);
     resizePioTexture(&waterTexture, TILE_WIDTH, TILE_HEIGHT);
     if(waterTexture.texture == NULL) {
         printf("Failed to load waterTexture image!\n");

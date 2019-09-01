@@ -138,6 +138,22 @@ void resetLevel(int levelNo) {
         case 6:
             fillLevel(&currLevel, "./assets/maps/cave_6.txt");
             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+            break;
+        case 7:
+            fillLevel(&currLevel, "./assets/maps/cave_7.txt");
+            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+            break;
+        case 8:
+            fillLevel(&currLevel, "./assets/maps/cave_8.txt");
+            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+            break;
+        case 9:
+            fillLevel(&currLevel, "./assets/maps/cave_9.txt");
+            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
+            break;
+        case 10:
+            fillLevel(&currLevel, "./assets/maps/cave_10.txt");
+            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
             break;              
         default:
             break;
@@ -162,7 +178,8 @@ int main(int argc, char *args[]) {
 
             SDL_Event e;
 
-            fillLevel(&currLevel, "./assets/maps/cave_1.txt");
+            fillLevel(&currLevel, "./assets/maps/cave_8.txt");
+            miner.level = 8;
             //fillLevel(&currLevel, "./assets/maps/albu.txt");
             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
             startMusic();
