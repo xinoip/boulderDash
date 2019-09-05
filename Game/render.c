@@ -270,8 +270,6 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
             tile_t currentTile = createTile(i, j);
             tile_t cam = createTile(camera.row, camera.col);
             int topBarMenu = 32;
-            // int diffX = (window.width / 2) - cam.center_x; 
-            // int diffY = (window.height / 2) - cam.center_y + topBarMenu;
             int diffX = (window.width/2) - cam.center_x;
             int diffY = (window.height/2) - cam.center_y;
 
@@ -292,18 +290,15 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
                 case rockTile:
                     renderPioTexture(rockTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                //case 'B':
                 case fallingRockTile:
                     renderPioTexture(rockTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                //case 'X':
                 case diamondTile:
                     renderPioTexture(diamondTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
                 case fallingDiamondTile:
                     renderPioTexture(diamondTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                //case 'Z':
                 case closedDoorTile:
                     renderPioTexture(closedDoorTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
@@ -320,7 +315,6 @@ void renderMap(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer 
                 case movingSpiderTile:
                     renderPioTexture(spiderTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
-                //case 'L':
                 case monsterTile:
                     renderPioTexture(monsterTexture, currentTile.center_x + diffX, currentTile.center_y + diffY, renderer);
                     break;
@@ -378,14 +372,12 @@ void updateGameBar(level_t level, SDL_Renderer *renderer, int lives) {
     char mapTimeText[12];
     char minerLivesText[12];
     sprintf(minerLivesText, "%d", lives);
-    //sprintf(mapTimeText, "%d", level.timeLimit);
     if(level.timeLimit == 0) {
         strcpy(mapTimeText, "Times up");
     } else {
         sprintf(mapTimeText, "%d", level.timeLimit);
     }
-    if(level.diamondCount <= 0) {
-        //updatePioTextFont(&diamondCount, "Door Open", renderer);    
+    if(level.diamondCount <= 0) {  
         sprintf(diaText, "%d", 0);
         updatePioTextFont(&diamondCount, diaText, renderer);
     } else {
@@ -401,7 +393,6 @@ void updateGameBar(level_t level, SDL_Renderer *renderer, int lives) {
         updatePioTextFont(&levelName, level.name, renderer);
     }
     
-    //renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
 }
 
 void renderOnDeath(level_t level, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {

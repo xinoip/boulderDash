@@ -1,6 +1,15 @@
 #include <stdio.h>
 #include "./level.h"
 
+void freeOldMap(level_t *level) {
+    if(level == NULL) return;
+    for(int i = 0; i < level->row; i++) {
+        free(level->map[i]);
+
+    }
+    free(level->map);
+}
+
 //create level_t and allocate space for level array
 level_t createLevel(int row, int col, int minerRow, int minerCol, int diamondCount, char *levelName, int timeLimit, int waterMs) {
     level_t rtr;
@@ -27,7 +36,6 @@ level_t createLevel(int row, int col, int minerRow, int minerCol, int diamondCou
 }
 
 //create level_t from level using createLevel function, and fill it with data from filename
-//probably a memory leak here, before filling destroy old map pls
 void fillLevel(level_t *level, char *filename) {
 
     int LINE_LENGTH = 255;
@@ -54,9 +62,6 @@ void fillLevel(level_t *level, char *filename) {
         }
     }
 
-    //fscanf(fp, "%c", &currChar); //read carriage return only for windows files
-    //fscanf(fp, "%c", &currChar); //read new line
-
     fscanf(fp, "%d", &row);
     fscanf(fp, "%d", &col);
 
@@ -77,6 +82,7 @@ void fillLevel(level_t *level, char *filename) {
     fscanf(fp, "%d", &timeLimit);
     fscanf(fp, "%d", &waterMs);
 
+    freeOldMap(level);
     *level = createLevel(row, col, minerRow, minerCol, diamondCount, buffer, timeLimit, waterMs);
 
     while(currChar != '-') {

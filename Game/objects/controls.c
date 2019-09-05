@@ -10,14 +10,12 @@ bool isValidCellToMove(level_t level, int row, int col) {
 }
 
 void updateMap(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
-    //updateFallingObjects(level, miner, camera, window, renderer);
-    updateFalling2(level, miner, camera, window, renderer);
+    updateFalling(level, miner, camera, window, renderer);
     updateSpiders(level, miner, camera, window, renderer);
-    //updateMonsters2(level, miner, camera, window, renderer);
     updateMonsters(level, miner, camera, window, renderer);
 }
 
-void updateFalling2(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
+void updateFalling(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
 
     int dontProcess[level->row][level->col];
     for(int row = 0; row<level->row; row++) {
@@ -113,87 +111,6 @@ void updateFalling2(level_t *level, miner_t *miner, camera_t camera, pioWindow_t
         }
     }
 
-}
-
-void updateFallingObjects(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
-    char fallingSymbol;
-    for(int row = 0; row < level->row; row++) {
-        for(int col = 0; col < level->col; col++) {
-            if(level->map[row][col] == rockTile || level->map[row][col] == diamondTile) { // If fall-able
-
-                // Determine falling symbol
-                if(level->map[row][col] == rockTile) fallingSymbol = fallingRockTile;
-                if(level->map[row][col] == diamondTile) fallingSymbol = fallingDiamondTile;
-
-                if(level->map[row+1][col] == emptyTile) { // Free fall
-                    level->map[row][col] = emptyTile;
-                    level->map[row+1][col] = fallingSymbol;
-                    
-                } else if(level->map[row+1][col] == rockTile || level->map[row+1][col] == diamondTile) { // Crash into another fallable object
-                    if(level->map[row][col+1] == emptyTile && level->map[row+1][col+1] == emptyTile) {  // Fall to right
-                        level->map[row][col] = emptyTile;
-                        level->map[row+1][col+1] = fallingSymbol;
-
-                    } else if(level->map[row][col-1] == emptyTile && level->map[row+1][col-1] == emptyTile) { // Fall to left
-                        level->map[row][col] = emptyTile;
-                        level->map[row+1][col-1] = fallingSymbol;
-
-                    }
-
-                } else if(level->map[row][col] == rockTile && level->map[row+1][col] == spiderTile) { // Crashing spiders PROBLEM
-                    level->map[row][col] = emptyTile;
-                    level->map[row+1][col] = fallingRockTile;
-                    generateDiaOnDeath(level, row+1, col, false);
-
-                } else if(level->map[row][col] == rockTile && level->map[row+1][col] == monsterTile) { // Crashing monsters
-                    level->map[row][col] = emptyTile;
-                    level->map[row+1][col] = fallingRockTile;
-                    generateDiaOnDeath(level, row+1, col, true);
-
-                } 
-
-            } else if(level->map[row][col] == fallingRockTile) {
-                if(level->map[row+1][col] == playerTile) {
-                    level->map[row][col] = emptyTile;
-                    level->map[row+1][col] = fallingRockTile;
-                    killMiner(level, miner, camera, window, renderer, rockTile);
-                }
-            }
-
-        }
-
-    }
-
-    // Convert falling objects to stationary objects
-    for(int row = 0; row < level->row; row++) {
-        for(int col = 0; col < level->col; col++) {
-            if(level->map[row][col] == fallingRockTile) { // Falling rocks
-                if(level->map[row+1][col] == playerTile) { // Crashin player
-                    //level->map[row][col] = emptyTile;
-                    //killMiner(level, miner, camera, window, renderer, rockTile);
-                    //level->map[row+1][col] = rockTile;
-                    //dont convert
-
-                } else { // Just convert to stationary
-                    level->map[row][col] = rockTile;
-
-                }
-                
-                // Play boulderFallSOund
-                if(level->map[row+1][col] != emptyTile && level->map[row+1][col] != playerTile) {
-                    playBoulderFall();
-                }
-
-            }
-
-            if(level->map[row][col] == fallingDiamondTile) { // Falling diamonds
-                level->map[row][col] = diamondTile;
-
-            }
-
-        }
-
-    }
 }
 
 void updateSpiders(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer) {
@@ -446,7 +363,6 @@ void generateDiaOnDeath(level_t *level, int row, int col, bool isMonster) {
 }
 
 void killMiner(level_t *level, miner_t *miner, camera_t camera, pioWindow_t window, SDL_Renderer *renderer, char deathCause) {
-    //printf("YOU DIED\n");
     miner->lives--;
     switch(deathCause) {
         case rockTile:

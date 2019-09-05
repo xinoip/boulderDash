@@ -18,36 +18,24 @@ void moveMiner(miner_t *miner, level_t *level, SDL_Event event) {
     switch (event.key.keysym.sym) {
         case SDLK_UP:
             if(isValidCellToMove(*level, miner->row-1, miner->col)) {
-                // level->map[miner->row][miner->col] = emptyTile;
-                // level->map[miner->row-1][miner->col] = playerTile;
-                // miner->row--;
                 processMove(level, miner, miner->row-1, miner->col, upDir);    
             }
             
             break;
         case SDLK_DOWN:
             if(isValidCellToMove(*level, miner->row+1, miner->col)) {
-                // level->map[miner->row][miner->col] = emptyTile;
-                // level->map[miner->row+1][miner->col] = playerTile;
-                // miner->row++;
                 processMove(level, miner, miner->row+1, miner->col, downDir);    
             }
             
             break;
         case SDLK_LEFT:
             if(isValidCellToMove(*level, miner->row, miner->col-1)) {
-                // level->map[miner->row][miner->col] = emptyTile;
-                // level->map[miner->row][miner->col-1] = playerTile;
-                // miner->col--;
                 processMove(level, miner, miner->row, miner->col-1, leftDir);    
             }
             
             break;
         case SDLK_RIGHT:
             if(isValidCellToMove(*level, miner->row, miner->col+1)) {
-                // level->map[miner->row][miner->col] = emptyTile;
-                // level->map[miner->row][miner->col+1] = playerTile;
-                // miner->col++;
                 processMove(level, miner, miner->row, miner->col+1, rightDir);    
             }
             
