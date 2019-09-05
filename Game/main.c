@@ -166,6 +166,7 @@ void gameOver() {
     SDL_RenderPresent(gRenderer);
     SDL_Delay(10000);
     fillLevel(&currLevel, "./assets/maps/cave_1.txt");
+    updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
     miner.level = 1;
     miner.lives = 10;
 }
