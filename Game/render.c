@@ -62,21 +62,21 @@ bool loadMedia(SDL_Renderer *renderer) {
     }
 
     //Load sounds
-    boulderFall = Mix_LoadWAV("./assets/sounds/boulderFall.ogg");
+    boulderFall = Mix_LoadWAV("./assets/sounds/boulderFall.wav");
     if(boulderFall == NULL) {
         printf( "Failed to load sound boulderFall! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
 
     //Load sounds
-    diamondCollect = Mix_LoadWAV("./assets/sounds/diamondCollect.ogg");
+    diamondCollect = Mix_LoadWAV("./assets/sounds/diamondCollect.wav");
     if(diamondCollect == NULL) {
         printf( "Failed to load sound diamondCollect! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
 
     //Load sounds
-    dirtRemove = Mix_LoadWAV("./assets/sounds/dirtRemove.ogg");
+    dirtRemove = Mix_LoadWAV("./assets/sounds/dirtRemove.wav");
     if(dirtRemove == NULL) {
         printf( "Failed to load sound dirtRemove! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
