@@ -26,19 +26,11 @@ void updateCameraPosition(camera_t *camera, int newRow, int newCol, int limitRow
     
     camera->row = newRow;
     camera->col = newCol;
-    
-    //int upLimit = camera->row - (camera->rowOffSet);
-    // int downLimit = camera->row + (camera->rowOffSet);
-    // int leftLimit = camera->col - (camera->colOffSet);
-    // int rightLimit = camera->col + (camera->colOffSet);
 
     int leftLimit = camera->col - (camera->rowOffSet/2);
     int rightLimit = camera->col + (camera->rowOffSet/2);
     int upLimit = camera->row - (camera->colOffSet/2);
     int downLimit = camera->row + (camera->colOffSet/2);
-
-    //printf("up %d, down %d, left %d, right %d\n", upLimit, downLimit, leftLimit, rightLimit);
-    //printf("%d rowoff, %d coloff\n", camera->rowOffSet, camera->colOffSet);
 
     while(leftLimit < 0) {
         camera->col++;

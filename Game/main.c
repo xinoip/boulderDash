@@ -160,11 +160,21 @@ void resetLevel(int levelNo) {
     }
 }
 
+void gameOver() {
+    updateGameBar(currLevel, gRenderer, 0);
+    renderGameBar(currLevel, gameWindow, gRenderer, true);
+    SDL_RenderPresent(gRenderer);
+    SDL_Delay(10000);
+    fillLevel(&currLevel, "./assets/maps/cave_1.txt");
+    miner.level = 1;
+    miner.lives = 10;
+}
+
 int main(int argc, char *args[]) {
 
     Uint32 lastTime = 0, currentTime;
     Uint32 levelTime = 0, levelLastTime;
-    Uint32 waterTime = 0, waterLastTime;
+    Uint32 waterTime = 0, waterLastTime = 0;
     if(!init()) {
         printf("Failed to initialize!\n");
 
@@ -178,13 +188,15 @@ int main(int argc, char *args[]) {
 
             SDL_Event e;
 
-            fillLevel(&currLevel, "./assets/maps/cave_2.txt");
-            miner.level = 2;
-            //fillLevel(&currLevel, "./assets/maps/albu.txt");
+            fillLevel(&currLevel, "./assets/maps/cave_7.txt");
+            miner.level = 7;
             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
             startMusic();
 
             while(!quit) {
+                if(miner.lives <= 0) {
+                    gameOver();
+                }
                 while(SDL_PollEvent(&e) != 0) {
                     if(e.type == SDL_QUIT) {
                         quit = true;
@@ -194,19 +206,6 @@ int main(int argc, char *args[]) {
                             moveMiner(&miner, &currLevel, e);
                         }
                         switch (e.key.keysym.sym) {
-                        case SDLK_a:
-                            fillLevel(&currLevel, "./assets/maps/mapA.txt");
-                            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
-                            break;
-                        case SDLK_b:
-                            fillLevel(&currLevel, "./assets/maps/albu.txt");
-                            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
-                            break;
-                        case SDLK_c:
-                            fillLevel(&currLevel, "./assets/maps/cave_1.txt");
-                            updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
-                            //updateGameBar(currLevel, gRenderer, miner.lives);
-                            break;
                         case SDLK_r:
                             resetLevel(miner.level);
                             break;
@@ -257,10 +256,11 @@ int main(int argc, char *args[]) {
                         }
 
                     }
-
+                    
                     waterTime = SDL_GetTicks();
                     if(waterTime > waterLastTime + currLevel.waterMs) {
                         updateWater(&currLevel);
+                        
                         waterLastTime = waterTime;
 
                     }

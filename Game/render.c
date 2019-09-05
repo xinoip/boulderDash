@@ -353,12 +353,8 @@ void renderGameBar(level_t level, pioWindow_t window, SDL_Renderer *renderer, bo
     SDL_RenderFillRect(renderer, &gameBar);
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-
-    //updatePioTextFont(&mainText, "Main", renderer);
-    //updatePioTextFont(&diamondCount, "0D", renderer);
     
     renderPioTextureCornered(levelName.texture, 0, 0, renderer);
-    //renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
 
     if(isPaused) {
         renderPioTextureCornered(pauseTexture, window.width - 32, 0, renderer);
@@ -397,8 +393,14 @@ void updateGameBar(level_t level, SDL_Renderer *renderer, int lives) {
         updatePioTextFont(&diamondCount, diaText, renderer);
     }
     updatePioTextFont(&mapTimer, mapTimeText, renderer);
-    updatePioTextFont(&minerLives, minerLivesText, renderer);
-    updatePioTextFont(&levelName, level.name, renderer);
+    if(lives <= 0) {
+        updatePioTextFont(&levelName, "GAME OVER", renderer);
+        updatePioTextFont(&minerLives, minerLivesText, renderer);
+    } else {
+        updatePioTextFont(&minerLives, minerLivesText, renderer);
+        updatePioTextFont(&levelName, level.name, renderer);
+    }
+    
     //renderPioTextureCornered(diamondCount.texture, 320, 0, renderer);
 }
 
