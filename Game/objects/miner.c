@@ -110,32 +110,41 @@ void processMove(level_t *level, miner_t *miner, int newRow, int newCol, moveDir
             miner->level++;
             switch (miner->level) {
             case 2:
-                fillLevel(level, "./assets/maps/cave_2.txt");    
+                fillLevel(level, "./assets/maps/cave_2.txt");
+                startMusic();    
                 break;
             case 3:
                 fillLevel(level, "./assets/maps/cave_3.txt");
+                startMusic();
                 break;
             case 4:
                 fillLevel(level, "./assets/maps/cave_4.txt");
+                startMusic();
                 break;
             case 5:
                 fillLevel(level, "./assets/maps/cave_5.txt");
+                startMusic();
                 miner->lives+= 3;
                 break;
             case 6:
                 fillLevel(level, "./assets/maps/cave_6.txt");
+                startMusic();
                 break;
             case 7:
                 fillLevel(level, "./assets/maps/cave_7.txt");
+                startMusic();
                 break;
             case 8:
                 fillLevel(level, "./assets/maps/cave_8.txt");
+                startMusic();
                 break;
             case 9:
                 fillLevel(level, "./assets/maps/cave_9.txt");
+                startMusic();
                 break;
             case 10:
                 fillLevel(level, "./assets/maps/cave_10.txt");
+                startMusic();
                 break;                
             default:
                 break;

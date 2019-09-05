@@ -28,5 +28,9 @@ void startMusic();
 void playBoulderFall();
 void playDiamondCollect();
 void playDirtRemove();
+void startMusic10(); 
+void startMusic30();
+void startMusic60();
+void stopMusic();
 
 #endif

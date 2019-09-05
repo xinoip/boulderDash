@@ -25,6 +25,9 @@ pioTextFont_t minerLives;
 pioTextFont_t levelName;
 
 Mix_Music *gMusic = NULL;
+Mix_Music *gm10 = NULL;
+Mix_Music *gm30 = NULL;
+Mix_Music *gm60 = NULL;
 Mix_Chunk *boulderFall = NULL;
 Mix_Chunk *diamondCollect = NULL;
 Mix_Chunk *dirtRemove = NULL;
@@ -34,9 +37,27 @@ bool loadMedia(SDL_Renderer *renderer) {
     bool success = true;
 
     //Load music
-    gMusic = Mix_LoadMUS("./assets/sounds/music.ogg");
+    gMusic = Mix_LoadMUS("./assets/sounds/music.wav");
     if(gMusic == NULL) {
         printf( "Failed to load sound gMusic! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+
+    gm10 = Mix_LoadMUS("./assets/sounds/gm10.wav");
+    if(gm10 == NULL) {
+        printf( "Failed to load sound gm10! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+
+    gm30 = Mix_LoadMUS("./assets/sounds/gm30.wav");
+    if(gm30 == NULL) {
+        printf( "Failed to load sound gm30! SDL_mixer Error: %s\n", Mix_GetError() );
+        success = false;
+    }
+
+    gm60 = Mix_LoadMUS("./assets/sounds/gm60.wav");
+    if(gm60 == NULL) {
+        printf( "Failed to load sound gm60! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
 
@@ -229,8 +250,28 @@ bool loadMedia(SDL_Renderer *renderer) {
 
 }
 
+void stopMusic() {
+    Mix_HaltMusic();
+}
+
 void startMusic() {
-    Mix_PlayMusic(gMusic, 0);
+    Mix_HaltMusic();
+    Mix_PlayMusic(gMusic, -1);
+}
+
+void startMusic10() {
+    Mix_HaltMusic();
+    Mix_PlayMusic(gm10, -1);
+}
+
+void startMusic30() {
+    Mix_HaltMusic();
+    Mix_PlayMusic(gm30, -1);
+}
+
+void startMusic60() {
+    Mix_HaltMusic();
+    Mix_PlayMusic(gm60, 3);
 }
 
 void playBoulderFall() {

@@ -23,6 +23,7 @@ level_t createLevel(int row, int col, int minerRow, int minerCol, int diamondCou
     strcpy(rtr.name, levelName);
 
     rtr.timeLimit = timeLimit;
+    rtr.timeCpy = timeLimit;
     rtr.waterMs = waterMs;
     
 

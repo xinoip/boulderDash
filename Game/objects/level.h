@@ -10,6 +10,7 @@ typedef struct Level {
     int diamondCount;
     int timeLimit;
     int waterMs;
+    int timeCpy;
     char *name;
 } level_t;
 

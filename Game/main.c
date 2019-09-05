@@ -114,6 +114,7 @@ void closeAll() {
 }
 
 void resetLevel(int levelNo) {
+    startMusic();
     switch (levelNo) {
         case 1:
             fillLevel(&currLevel, "./assets/maps/cave_1.txt");
@@ -173,8 +174,8 @@ void gameOver() {
 
 int main(int argc, char *args[]) {
 
-    Uint32 lastTime = 0, currentTime;
-    Uint32 levelTime = 0, levelLastTime;
+    Uint32 lastTime = 0, currentTime = 0;
+    Uint32 levelTime = 0, levelLastTime = 0;
     Uint32 waterTime = 0, waterLastTime = 0;
     if(!init()) {
         printf("Failed to initialize!\n");
@@ -189,12 +190,30 @@ int main(int argc, char *args[]) {
 
             SDL_Event e;
 
+            int playing10 = 0;
+            int playing30 = 0;
+            int playing60 = 0;
+
             fillLevel(&currLevel, "./assets/maps/cave_1.txt");
             miner.level = 1;
             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
             startMusic();
 
             while(!quit) {
+                if(playing60 == 0 && currLevel.timeLimit <= (currLevel.timeCpy * 10) / 100) {
+                    printf("gone 60\n");
+                    startMusic60();
+                    playing60 = 1;
+                } else if(playing30 == 0 && currLevel.timeLimit <= (currLevel.timeCpy * 20) / 100) {
+                    printf("gone 30\n");
+                    startMusic30();
+                    playing30 = 1;
+                } else if(playing10 == 0 && currLevel.timeLimit <= (currLevel.timeCpy * 30) / 100 && currLevel.timeLimit != 0) {
+                    printf("gone 10\n");
+                    startMusic10();
+                    playing10 = 1;
+                } 
+
                 if(miner.lives <= 0) {
                     gameOver();
                 }
@@ -234,6 +253,7 @@ int main(int argc, char *args[]) {
                 
                 // updates
                 if(!pause) {
+                    
                     currentTime = SDL_GetTicks();
                     if(currentTime > lastTime + 200) {
                         updateMap(&currLevel, &miner, camera, gameWindow, gRenderer);
@@ -244,11 +264,17 @@ int main(int argc, char *args[]) {
                     levelTime = SDL_GetTicks();
                     if(levelTime > levelLastTime + 1000) {
                         currLevel.timeLimit--;
+                        
                         levelLastTime = levelTime;
                         if(currLevel.timeLimit <= 0) {
                             currLevel.timeLimit = 0;
                             updateGameBar(currLevel, gRenderer, miner.lives);
                             renderGameBar(currLevel, gameWindow, gRenderer, pause);
+                            printf("gone\n");
+                            playing10 = 0;
+                            playing30 = 0;
+                            playing60 = 0;
+                            stopMusic();
                             SDL_RenderPresent(gRenderer);
                             SDL_Delay(3000);
                             miner.lives--;
