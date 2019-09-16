@@ -1,9 +1,9 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-#include "./include/SDL.h"
-#include "./include/SDL_ttf.h"
-#include "./include/SDL_mixer.h"
+#include "./libs/include/SDL.h"
+#include "./libs/include/SDL_ttf.h"
+#include "./libs/include/SDL_mixer.h"
 #include "./base.h"
 #include "./wrappers/pio-texture.h"
 #include "./wrappers/pio-window.h"

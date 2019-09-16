@@ -1,7 +1,7 @@
 #ifndef PIO_TEXT_FONT_H
 #define PIO_TEXT_FONT_H
 
-#include "../include/SDL_ttf.h"
+#include "../libs/include/SDL_ttf.h"
 #include <stdlib.h>
 #include "./pio-texture.h"
 

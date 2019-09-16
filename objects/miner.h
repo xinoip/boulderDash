@@ -3,7 +3,7 @@
 
 typedef struct Miner miner_t;
 
-#include "../include/SDL.h"
+#include "../libs/include/SDL.h"
 #include <stdlib.h>
 #include "../base.h"
 #include "./level.h"

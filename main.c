@@ -1,7 +1,7 @@
-#include "./include/SDL.h"
-#include "./include/SDL_image.h"
-#include "./include/SDL_ttf.h"
-#include "./include/SDL_mixer.h"
+#include "./libs/include/SDL.h"
+#include "./libs/include/SDL_image.h"
+#include "./libs/include/SDL_ttf.h"
+#include "./libs/include/SDL_mixer.h"
 
 #include "./base.h"
 #include "./wrappers/pio-texture.h"
