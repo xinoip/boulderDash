@@ -1,2 +1,0 @@
-ALWAYS load PioTextFonts before PioTextures in loadMedia phase!!!
-For rendering, there is no visible bug yet. Render in any order.
