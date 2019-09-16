@@ -194,7 +194,8 @@ int main(int argc, char *args[]) {
             int playing30 = 0;
             int playing60 = 0;
 
-            fillLevel(&currLevel, "./assets/maps/cave_1.txt");
+            //fillLevel(&currLevel, "./assets/maps/cave_1.txt");
+			fillLevel(&currLevel, "./assets/maps/plswork.txt");           
             miner.level = 1;
             updateMiner(&miner, currLevel.startMinerRow, currLevel.startMinerCol);
             startMusic();
