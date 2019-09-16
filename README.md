@@ -1,3 +1,5 @@
+![Showcase](https://github.com/xinoip/boulderDash/blob/readme-assets/ast2.gif "Showcase")
+
 # Boulderdash Clone 
 
 Clone of famous commodore 64 game, boulderdash, made in C with SDL2 library.
@@ -34,3 +36,5 @@ But if you want to run the game without makefile set your LD_LIBRARY_PATH:
 ```bash
 export LD_LIBRARY_PATH:$LD_LIBRARY_PATH:./libs
 ```
+
+![Rip](https://github.com/xinoip/boulderDash/blob/readme-assets/ast1.gif "Rip")
